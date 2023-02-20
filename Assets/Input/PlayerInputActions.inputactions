@@ -161,7 +161,7 @@
                     "path": "<Keyboard>/b",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "KeyboardMouse",
                     "action": "Bomb",
                     "isComposite": false,
                     "isPartOfComposite": false
