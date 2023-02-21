@@ -22,7 +22,7 @@ public class Player : MonoBehaviour
     // Awake 이 게임 오브젝트가 생성 완료 되었을 때 실행되는 함수 - Start()보다 더 빠름.
     private void Awake()
     {
-        anim = GetComponent<Animator>(); // 한번 찾아놓고 쓸 것
+        anim = GetComponent<Animator>(); // 한번 찾아놓고 쓸 것_성능문제
         inputActions = new PlayerInputActions(); // new를 유일하게 사용하는 PlayerInputActions();
         fireTransform = transform.GetChild(0);
 
