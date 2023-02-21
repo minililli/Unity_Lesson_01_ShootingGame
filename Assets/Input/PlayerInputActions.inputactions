@@ -167,6 +167,34 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "Test",
+            "id": "d7afa28c-faec-47d7-9c48-849b0c1c0ca0",
+            "actions": [
+                {
+                    "name": "MovewithMouse",
+                    "type": "Button",
+                    "id": "f7e0963c-1c97-490a-8ac5-1b403793c6ee",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "05447c6c-ca3a-47f2-85d1-17b1ff826ea3",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MovewithMouse",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [

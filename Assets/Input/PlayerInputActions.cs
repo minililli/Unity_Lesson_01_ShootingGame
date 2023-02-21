@@ -189,6 +189,34 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Test"",
+            ""id"": ""d7afa28c-faec-47d7-9c48-849b0c1c0ca0"",
+            ""actions"": [
+                {
+                    ""name"": ""MovewithMouse"",
+                    ""type"": ""Button"",
+                    ""id"": ""f7e0963c-1c97-490a-8ac5-1b403793c6ee"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""05447c6c-ca3a-47f2-85d1-17b1ff826ea3"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MovewithMouse"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -215,6 +243,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
         m_Player_Fire = m_Player.FindAction("Fire", throwIfNotFound: true);
         m_Player_Bomb = m_Player.FindAction("Bomb", throwIfNotFound: true);
+        // Test
+        m_Test = asset.FindActionMap("Test", throwIfNotFound: true);
+        m_Test_MovewithMouse = m_Test.FindAction("MovewithMouse", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -319,6 +350,39 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         }
     }
     public PlayerActions @Player => new PlayerActions(this);
+
+    // Test
+    private readonly InputActionMap m_Test;
+    private ITestActions m_TestActionsCallbackInterface;
+    private readonly InputAction m_Test_MovewithMouse;
+    public struct TestActions
+    {
+        private @PlayerInputActions m_Wrapper;
+        public TestActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @MovewithMouse => m_Wrapper.m_Test_MovewithMouse;
+        public InputActionMap Get() { return m_Wrapper.m_Test; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(TestActions set) { return set.Get(); }
+        public void SetCallbacks(ITestActions instance)
+        {
+            if (m_Wrapper.m_TestActionsCallbackInterface != null)
+            {
+                @MovewithMouse.started -= m_Wrapper.m_TestActionsCallbackInterface.OnMovewithMouse;
+                @MovewithMouse.performed -= m_Wrapper.m_TestActionsCallbackInterface.OnMovewithMouse;
+                @MovewithMouse.canceled -= m_Wrapper.m_TestActionsCallbackInterface.OnMovewithMouse;
+            }
+            m_Wrapper.m_TestActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @MovewithMouse.started += instance.OnMovewithMouse;
+                @MovewithMouse.performed += instance.OnMovewithMouse;
+                @MovewithMouse.canceled += instance.OnMovewithMouse;
+            }
+        }
+    }
+    public TestActions @Test => new TestActions(this);
     private int m_KeyboardMouseSchemeIndex = -1;
     public InputControlScheme KeyboardMouseScheme
     {
@@ -333,5 +397,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         void OnMove(InputAction.CallbackContext context);
         void OnFire(InputAction.CallbackContext context);
         void OnBomb(InputAction.CallbackContext context);
+    }
+    public interface ITestActions
+    {
+        void OnMovewithMouse(InputAction.CallbackContext context);
     }
 }
