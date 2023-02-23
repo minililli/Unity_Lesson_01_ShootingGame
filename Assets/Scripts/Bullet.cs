@@ -3,12 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
+
 
 public class Bullet : MonoBehaviour
 {
-
     public float speed = 10.0f;
+    public GameObject effect;
 
     // Start is called before the first frame update
     void Start()
@@ -33,4 +33,21 @@ public class Bullet : MonoBehaviour
     {
         GoBullet();
     }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Enemy")) // 부딪친 게임오브젝트의 태그가 "Enemy"일때만 처리  
+      //if(collision.gameObject.tag == "Enemy");는 절대로 하지 말 것. 더 느리고, 메모리도 많이 쓴다. 
+        {
+            OnHitEffect();
+            Destroy(gameObject);
+        }
+    }
+    private void OnHitEffect()
+    {
+        GameObject obj = Instantiate(effect);
+        obj.transform.position = transform.position;
+    }
+
+
 }
