@@ -173,9 +173,45 @@
             "id": "d7afa28c-faec-47d7-9c48-849b0c1c0ca0",
             "actions": [
                 {
-                    "name": "MovewithMouse",
+                    "name": "Test1",
                     "type": "Button",
                     "id": "f7e0963c-1c97-490a-8ac5-1b403793c6ee",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Test2",
+                    "type": "Button",
+                    "id": "ed01bede-f363-4972-9cb5-63993e4b2de4",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Test3",
+                    "type": "Button",
+                    "id": "bca7ba0a-e84f-4a8a-a8cf-afdaadb233aa",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Test4",
+                    "type": "Button",
+                    "id": "18a1cf7c-39b4-4b45-a63e-ba203ced664f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Test5",
+                    "type": "Button",
+                    "id": "26d1d41b-7895-4b74-9612-822f2ebd7142",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -186,11 +222,55 @@
                 {
                     "name": "",
                     "id": "05447c6c-ca3a-47f2-85d1-17b1ff826ea3",
-                    "path": "<Mouse>/rightButton",
+                    "path": "<Keyboard>/1",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "MovewithMouse",
+                    "action": "Test1",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9d966d37-c501-409d-9702-382a17541be4",
+                    "path": "<Keyboard>/2",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Test2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d2ed3a4c-886a-4e30-ac3c-38d49e7535ab",
+                    "path": "<Keyboard>/3",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Test3",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2a507953-e086-417c-af53-54a36131855d",
+                    "path": "<Keyboard>/4",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Test4",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "38e72a34-fb31-425f-ae85-3a7b24ff0802",
+                    "path": "<Keyboard>/5",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Test5",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

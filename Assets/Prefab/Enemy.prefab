@@ -120,10 +120,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb7f088cc666bb441938d2b3eeb3c860, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  explosionType: 3
+  score: 10
   speed: 1
   amplitude: 1
   frequency: 1
-  explosionPrefab: {fileID: 8938052077853560911, guid: fcda6d258e50c7a41a359dfcaf02967e, type: 3}
 --- !u!70 &4439716525878035803
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

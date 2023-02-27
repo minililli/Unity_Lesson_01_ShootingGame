@@ -17,13 +17,15 @@ public class ScoreBoard : MonoBehaviour
 
     private void Awake()
     {
-        player = FindObjectOfType<Player>();
-        Transform child = transform.GetChild(1);                  //두번째 자식 가져오기
+        
+        Transform child = transform.GetChild(1);                  //두번째 자식(Number) 가져오기
         score = child.GetComponentInChildren<TextMeshProUGUI>(); //두번째 자식 컴포넌트 가져오기
     }
     private void Start()
     {
         StartCoroutine(StartScore());
+        player = FindObjectOfType<Player>();
+        //StartCoroutine(StartScore());
         player.onScoreChange += ScoreUpdate;
         
     }
@@ -49,7 +51,7 @@ public class ScoreBoard : MonoBehaviour
 
             currentScore += Time.deltaTime * scoreupSpeed; //currentScore를 초당 1씩 증가시킨다. 
             currentScore = Mathf.Min(currentScore, targetScore);
-            score.text = $"{currentScore:f0}"; // 소수점을 0개 증가시킨다.
+            score.text = $"{currentScore:f0}"; // 소수점아래 0개까지 증가시킨다.
         }
            
     }
