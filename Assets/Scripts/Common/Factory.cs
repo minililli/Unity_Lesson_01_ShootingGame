@@ -8,32 +8,41 @@ public enum PoolObjectType
 {
     Bullet = 0,
     Hit,
-    Enemy,
+    Fighter,
+    Asteroid,
+    Asteroidsmall,
     Explosion
+    
 }
 
 public class Factory : Singleton<Factory>
 {
     BulletPool bulletPool;
-    EnemyPool enemyPool;
+    FighterPool fighterPool;
     HitEffectPool hitPool;
     ExplosionEffectPool explosionPool;
+    AsteroidPool asteroidPool;
+    AsteroidsmallPool asteroidsmallPool;
 
     protected override void PreInitialize()
     {
         bulletPool = GetComponentInChildren<BulletPool>();
-        enemyPool = GetComponentInChildren<EnemyPool>();
+        fighterPool = GetComponentInChildren<FighterPool>();
         hitPool = GetComponentInChildren<HitEffectPool>();
         explosionPool = GetComponentInChildren<ExplosionEffectPool>();
+        asteroidPool = GetComponentInChildren<AsteroidPool>();
+        asteroidsmallPool = GetComponentInChildren<AsteroidsmallPool>();
 
     }
 
     protected override void Initialize()
     {
         bulletPool?.Initialize();
-        enemyPool?.Initialize();
+        fighterPool?.Initialize();
         hitPool?.Initialize();
         explosionPool?.Initialize();
+        asteroidPool?.Initialize();
+        asteroidsmallPool?.Initialize();
     }
 
 
@@ -50,12 +59,20 @@ public class Factory : Singleton<Factory>
             case PoolObjectType.Hit:
                 result = GetHitEffect().gameObject;
                 break;
-            case PoolObjectType.Enemy:
-                result = GetEnemy().gameObject;
+            case PoolObjectType.Fighter:
+                result = GetFighter().gameObject;
                 break;
             case PoolObjectType.Explosion:
                 result = GetExplosionEffect().gameObject;
                 break;
+            case PoolObjectType.Asteroid:
+                result = GetAsteroid().gameObject;
+                break;
+
+            case PoolObjectType.Asteroidsmall:
+                result = GetAsteroidSmall().gameObject;
+                break;
+
         }
         return result;
     }
@@ -63,7 +80,12 @@ public class Factory : Singleton<Factory>
     public Bullet GetBullet() => bulletPool?.GetObject();
     public Effect GetHitEffect() => hitPool?.GetObject();
 
-    public Enemy GetEnemy() => enemyPool?.GetObject();
+    public Fighter GetFighter() => fighterPool?.GetObject();
 
     public Effect GetExplosionEffect() => explosionPool?.GetObject();
+    
+    //운석하나 꺼내는 함수
+    public Asteroid GetAsteroid() => asteroidPool?.GetObject();
+
+    public AsteroidBase GetAsteroidSmall() => asteroidsmallPool?.GetObject();
 }

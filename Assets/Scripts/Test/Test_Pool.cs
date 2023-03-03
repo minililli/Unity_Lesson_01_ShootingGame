@@ -6,9 +6,10 @@ using UnityEngine.InputSystem;
 public class Test_Pool : Test_Base
 {
     public BulletPool pool1;
-    public EnemyPool pool2;
+    public FighterPool pool2;
     public HitEffectPool pool3;
     public ExplosionEffectPool pool4;
+    public AsteroidPool pool5;
 
     Transform[] spawnTransforms;
 
@@ -38,5 +39,9 @@ public class Test_Pool : Test_Base
         PoolObject obj = pool4.GetObject(spawnTransforms[1]);
     }
 
+    protected override void Test5(InputAction.CallbackContext _)
+    {
+        PoolObject obj = pool5.GetObject(spawnTransforms[1]);
+    }
 
 }

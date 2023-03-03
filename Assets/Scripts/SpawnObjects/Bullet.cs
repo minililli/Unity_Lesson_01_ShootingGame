@@ -49,9 +49,8 @@ public class Bullet : PoolObject
             GameObject obj = Factory.Inst.GetObject(hitType); //hit 이팩트 풀에서 가져오기
             obj.transform.position = collision.contacts[0].point; // 충돌지점으로 이동시키기
             obj.gameObject.SetActive(false);
-        
-            
-            StartCoroutine(LifeOver(0));
+
+            gameObject.SetActive(false);
         }
         
        

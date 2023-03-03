@@ -24,7 +24,7 @@ public class Test_Singleton : Test_Base
     }
     protected override void Test3(InputAction.CallbackContext _)
     {
-        Factory.Inst.GetEnemy();
+        Factory.Inst.GetFighter();
 
     }
     protected override void Test4(InputAction.CallbackContext _)

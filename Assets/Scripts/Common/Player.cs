@@ -155,13 +155,13 @@ public class Player : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log($"충돌영역에 들어감 + 충돌대상 : {collision.gameObject.name}");
+        //Debug.Log($"충돌영역에 들어감 + 충돌대상 : {collision.gameObject.name}");
         
     }
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-        Debug.Log($"충돌영역에서 나감 + 충돌대상 : {collision.gameObject.name}");
+        //Debug.Log($"충돌영역에서 나감 + 충돌대상 : {collision.gameObject.name}");
     }
 
     //private void OnCollisionStay2D(Collision2D collision)
