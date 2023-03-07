@@ -13,7 +13,9 @@ GameObject:
   - component: {fileID: 5213604903312565115}
   - component: {fileID: 5213604903312565119}
   - component: {fileID: 5213604903312565118}
-  m_Layer: 0
+  - component: {fileID: -8401072677141827029}
+  - component: {fileID: 5331717269310810412}
+  m_Layer: 8
   m_Name: asteroid
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -112,6 +114,8 @@ MonoBehaviour:
   splitCount: 3
   minLifeTime: 5
   maxLifeTime: 7
+  criticalChance: 0.403
+  criticalSplitCount: 20
 --- !u!58 &5213604903312565119
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -149,3 +153,32 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!45 &-8401072677141827029
+Skybox:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5213604903312565089}
+  m_Enabled: 1
+  m_CustomSkybox: {fileID: 0}
+--- !u!95 &5331717269310810412
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5213604903312565089}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 76edda4e9db1c574490f532658ae64a6, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

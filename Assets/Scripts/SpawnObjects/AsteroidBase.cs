@@ -38,7 +38,7 @@ public class AsteroidBase : Enemy_Base
         set => dir = value;
     }
 
-    private void Awake()
+    protected virtual void Awake()
     {
         asteroidRenderer = GetComponent<SpriteRenderer>();
     }

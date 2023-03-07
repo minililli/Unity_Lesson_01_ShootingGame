@@ -19,13 +19,29 @@ public class Asteroid : AsteroidBase
     //최대수명
     public float maxLifeTime = 7.0f;
 
-   
+
+    //크리티컬이 터질 확률
+    [Range(0.0f, 1.0f)]
+    public float criticalChance = 0.5f;
+    //크리티컬이 터졌을 때 나올 작은 운석 갯수
+    public int criticalSplitCount = 20;
+
+    Animator anim;
+
+    readonly WaitForSeconds oneSecond = new WaitForSeconds(1);
+
+    protected override void Awake()
+    {
+        base.Awake();
+        anim = GetComponent<Animator>();
+    }
+
     protected override void OnEnable()
     {
         base.OnEnable();
         score = 30;
         float lifeTime = Random.Range(minLifeTime, maxLifeTime);
-        Debug.Log($"{lifeTime}초뒤 자폭함");
+        //Debug.Log($"{lifeTime}초뒤 자폭함");
 
         //이전 코루틴 영향 제거
         StopAllCoroutines();
@@ -39,15 +55,19 @@ public class Asteroid : AsteroidBase
     {
         base.OnCrush();
 
-        //if ()           //5%확률로
+        /*if ()           //5%확률로
         {
             splitCount = 20;
         }
         else
         {
             splitCount = Random.Range(3, 8);
+        } */
+        //float random = Random.Range(0.0f, 1.0f); // 확률
+        if(Random.value < criticalChance) // 정해진 확률 이하면 실행
+        {
+            splitCount = criticalSplitCount; // criticalChance 이하면 20개 생성
         }
-       
 
         float angleGap = 360 / splitCount;
         float seed = Random.Range(0.0f, 360.0f);
@@ -70,7 +90,10 @@ public class Asteroid : AsteroidBase
 
     IEnumerator SelfCrush(float lifeTime)
     {
-        yield return new WaitForSeconds(lifeTime);
+        yield return new WaitForSeconds(lifeTime-1); // 1초전까지 대기
+        anim.SetTrigger("Selfcrush");               // 트리거 발동 시키고
+
+        yield return oneSecond; // 1초 대기
         Debug.Log("자폭함");
         isSelfCrushed = true;
         Crush();

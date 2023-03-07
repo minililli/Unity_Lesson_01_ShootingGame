@@ -13,8 +13,9 @@ public class Player : MonoBehaviour
     PlayerInputActions inputActions; //InputActions 인스턴스 생성
     Vector2 inputDir = Vector2.zero; //움직임 스무스하게 하기위한 작업 2.초기화
 
+   
     Transform fireTransform;
-
+    Rigidbody2D rigid;
 
     // 움직이는 속도 수정
     public float speed = 10.0f;
@@ -25,7 +26,7 @@ public class Player : MonoBehaviour
     
 
     //delegate
-    public Action<int> onScoreChange; 
+    public Action<int> onScoreChange;
 
     public int Score //프로퍼티(Property)
     { 
@@ -39,6 +40,7 @@ public class Player : MonoBehaviour
     }
 
    
+   
     GameObject fireFlash;
 
     int score = 0;
@@ -51,15 +53,17 @@ public class Player : MonoBehaviour
     public void AddScore(int plus)
     {
         Score += plus; //대문자 Score여야함!
-        Debug.Log($"점수 : {score}");
+        //Debug.Log($"점수 : {score}");
     }
 
 
     // Awake 이 게임 오브젝트가 생성 완료 되었을 때 실행되는 함수 - Start()보다 더 빠름.
     private void Awake()
     {
+        rigid = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>(); // 한번 찾아놓고 쓸 것_성능문제
         inputActions = new PlayerInputActions(); // new를 유일하게 사용하는 PlayerInputActions();
+        
         
         fireTransform = transform.GetChild(0);
         fireFlash = transform.GetChild(1).gameObject;
@@ -177,7 +181,7 @@ public class Player : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        Debug.Log($"트리거에서 나감 + 트리거대상 : {collision.gameObject.name}");
+        //Debug.Log($"트리거에서 나감 + 트리거대상 : {collision.gameObject.name}");
     }
 
     //private void OnTriggerStay2D(Collider2D collision)
@@ -193,14 +197,29 @@ public class Player : MonoBehaviour
 
     }
 
-    void Update()
+    private void FixedUpdate()
     {
+        // 항상 일정한 시간 간격으로 실행되는 업데이트
+        // 물리 연산이 들어가는 것은 이쪽에서 실행
+        
+        //Debug.Log(Time.fixedDeltaTime);
+        //움직이는 방법 두가지
+        //rigid.MovePosition(); //특정위치로 순간이동시키기. 움직일때 막히면 거기서부터는 진행안함. 관성이 없는 움직임시킬때 유용함.
+        //rigid Addforce(); //특정방향으로 힘을 가하기. 움직일때 막히면 거기서부터는 진행안함. 관성이있음. 
 
+        rigid.MovePosition(rigid.position + Time.fixedDeltaTime * speed * inputDir);
+
+
+    }
+    /*void Update()
+    {
+        Debug.Log(Time.deltaTime);
+
+        //transform.Translate(Time.deltaTime * speed * inputDir); //: 위와 동일한 움직임 구현하는 문장
         //transform.position += (Vector3)(Time.deltaTime * speed * inputDir);//움직임 스무스하게 하기위한 작업 4
-        transform.Translate(Time.deltaTime * speed * inputDir); //: 위와 동일한 움직임 구현하는 문장
         // 위 코드문해석 => (Update안에서 실행할 때) 초당 speed의 속도로 inputDir방향으로 이동
         //30프레임 컴퓨터의 deltaTime = 1/30 = 0.0333333, 120프레임 컴퓨터의 deltaTime = 1/120 = 0.008333333
-        
+
 
         //Debug.Log("Update");
         // 1.InputManager 를 통한 움직임 구현 -> 반응속도 떨어지고 CPU 지속사용 등으로 게임 성능 저하됨.
@@ -232,5 +251,5 @@ public class Player : MonoBehaviour
         //Debug.Log(inputVertical);
 
 
-    }
+    }*/
 }
