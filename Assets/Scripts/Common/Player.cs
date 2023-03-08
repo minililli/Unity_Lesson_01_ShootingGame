@@ -2,6 +2,7 @@ using Mono.Cecil;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -12,21 +13,51 @@ public class Player : MonoBehaviour
     //2. InputSystem을 통한 움직임 구현
     PlayerInputActions inputActions; //InputActions 인스턴스 생성
     Vector2 inputDir = Vector2.zero; //움직임 스무스하게 하기위한 작업 2.초기화
-
-   
-    Transform fireTransform;
     Rigidbody2D rigid;
+    //발사 위치 표시용 트랜스폼
+    //private Transform fireRoot;
+    private Transform[] fireTransforms;
 
     // 움직이는 속도 수정
     public float speed = 10.0f;
+    
     // 플레이어의 총알 타입
     public PoolObjectType bulletType;
     
     public float fireInterval = 0.5f;
-    
+
+    int power = 0;
+    float fireAngle = 30.0f;
+    int extraPowerBonus = 300;
+    Vector3 firedir;
+
+    int Power
+    {
+        get => power;
+        set
+        {
+            power = value;
+            if (power > 3)
+                AddScore(extraPowerBonus);
+            power = Mathf.Clamp(power, 1, 3);
+
+            RefreshFirePositions(power);
+        }
+    }
+
+    int score = 0;
+
+
+
+    GameObject fireFlash;
+
+    //연사용 코루틴을 저장할 변수
+    IEnumerator fireCoroutine;
 
     //delegate
     public Action<int> onScoreChange;
+
+
 
     public int Score //프로퍼티(Property)
     { 
@@ -39,17 +70,9 @@ public class Player : MonoBehaviour
         }  
     }
 
+
+    
    
-   
-    GameObject fireFlash;
-
-    int score = 0;
-
-    //연사용 코루틴을 저장할 변수
-    IEnumerator fireCoroutine;
-
-
-
     public void AddScore(int plus)
     {
         Score += plus; //대문자 Score여야함!
@@ -65,8 +88,15 @@ public class Player : MonoBehaviour
         inputActions = new PlayerInputActions(); // new를 유일하게 사용하는 PlayerInputActions();
         
         
-        fireTransform = transform.GetChild(0);
+        Transform fireRoot = transform.GetChild(0);
+        fireTransforms = new Transform[fireRoot.childCount];
         fireFlash = transform.GetChild(1).gameObject;
+       
+        for(int i = 0; i<fireRoot.childCount;i++)
+        {
+            fireTransforms[i] = fireRoot.GetChild(i);
+        }
+       
         fireFlash.SetActive(false);
 
         fireCoroutine = FireCoroutine();
@@ -91,37 +121,68 @@ public class Player : MonoBehaviour
     //이 게임 오브젝트가 비활성화될 때 실행되는 함수
     private void OnDisable() // Enable과 순서가 반대!
     {
-        inputActions.Player.Disable();
-
         inputActions.Player.Move.canceled -= OnMoveInput;
         inputActions.Player.Move.performed -= OnMoveInput;
         inputActions.Player.Bomb.performed -= OnBomb; // 실습Bomb
         inputActions.Player.Fire.canceled -= OnFireStop;
         inputActions.Player.Fire.performed -= OnFireStart;
+        inputActions.Player.Disable();
     }
+
+    // 시작할 때 한번 실행되는 함수  
+    void Start()
+    {
+        //Debug.Log("Start");
+        //gameObject.SetActive(false);
+        power = 1;
+
+    }
+     private void FixedUpdate()
+    {
+        // 항상 일정한 시간 간격으로 실행되는 업데이트
+        // 물리 연산이 들어가는 것은 이쪽에서 실행
+
+        //Debug.Log(Time.fixedDeltaTime);
+        //움직이는 방법 두가지
+        //rigid.MovePosition(); //특정위치로 순간이동시키기. 움직일때 막히면 거기서부터는 진행안함. 관성이 없는 움직임시킬때 유용함.
+        //rigid Addforce(); //특정방향으로 힘을 가하기. 움직일때 막히면 거기서부터는 진행안함. 관성이있음. 
+
+        rigid.MovePosition(rigid.position + Time.fixedDeltaTime * speed * inputDir);
+
+
+    }
+
 
     private void OnFireStart(InputAction.CallbackContext context)
     {
         //Debug.Log("Fire");
         StartCoroutine(fireCoroutine);
 
-
-
     }
     private void OnFireStop(InputAction.CallbackContext context)
     {
         StopCoroutine(fireCoroutine);
-
     }
+
 
 
     IEnumerator FireCoroutine()
     {
         while(true)
         {
+            for (int i = 0; i < power; i++)
+            {
+                GameObject obj = Factory.Inst.GetObject(bulletType);
+                Transform firePos = fireTransforms[i];
+                obj.transform.position = firePos.position;
+                obj.transform.rotation = firePos.rotation;
+            }
 
-            GameObject obj = Factory.Inst.GetObject(bulletType);     
-            obj.transform.position = fireTransform.position;
+            //obj.transform.position = fireRoot.position;
+            /*for (int i = 0; i < fireRoot.childCount; i++)
+            {
+                Transform firePos = firetransforms[i].transform;
+            }*/
             StartCoroutine(FlashEffect());
             yield return new WaitForSeconds(fireInterval);
         }
@@ -156,11 +217,17 @@ public class Player : MonoBehaviour
         inputDir = dir;        
 
     }
+   
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         //Debug.Log($"충돌영역에 들어감 + 충돌대상 : {collision.gameObject.name}");
-        
+        if (collision.gameObject.CompareTag("PowerUp"))
+        {
+            Power++;
+            collision.gameObject.SetActive(false);
+        }
+
     }
 
     private void OnCollisionExit2D(Collision2D collision)
@@ -175,7 +242,7 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log($"트리거안에 들어감 + 트리거대상 : {collision.gameObject.name}");
+        //Debug.Log($"트리거안에 들어감 + 트리거대상 : {collision.gameObject.name}");
     }
 
 
@@ -189,28 +256,6 @@ public class Player : MonoBehaviour
     //    Debug.Log("트리거에서 움직임");
     //}
 
-    // 시작할 때 한번 실행되는 함수  
-    void Start()
-    {
-        //Debug.Log("Start");
-        //gameObject.SetActive(false);
-
-    }
-
-    private void FixedUpdate()
-    {
-        // 항상 일정한 시간 간격으로 실행되는 업데이트
-        // 물리 연산이 들어가는 것은 이쪽에서 실행
-        
-        //Debug.Log(Time.fixedDeltaTime);
-        //움직이는 방법 두가지
-        //rigid.MovePosition(); //특정위치로 순간이동시키기. 움직일때 막히면 거기서부터는 진행안함. 관성이 없는 움직임시킬때 유용함.
-        //rigid Addforce(); //특정방향으로 힘을 가하기. 움직일때 막히면 거기서부터는 진행안함. 관성이있음. 
-
-        rigid.MovePosition(rigid.position + Time.fixedDeltaTime * speed * inputDir);
-
-
-    }
     /*void Update()
     {
         Debug.Log(Time.deltaTime);
@@ -252,4 +297,47 @@ public class Player : MonoBehaviour
 
 
     }*/
+    private void RefreshFirePositions(int power)
+    {
+        //기존 fireRoot 자식 비활성화 하기
+        for (int i = 0; i < fireTransforms.Length; i++)
+        {
+            //fireRoot.GetChild(i).gameObject.SetActive(false);
+            fireTransforms[i].gameObject.SetActive(false);
+        }
+
+        for (int i = 0; i < power; i++)
+        {
+            //fireRoot.GetChild(i).gameObject.SetActive(true);
+            //파워 1 : 0
+            //파워 2 : -15,15
+            //파워 3 : -30,0,30
+            Transform firePos = fireTransforms[i];
+            firePos.localPosition = Vector3.zero;
+            firePos.rotation = Quaternion.Euler(0, 0, (power - 1) * (fireAngle * 0.5f) + i * (-fireAngle));         //쌤이 만든 식
+            firePos.Translate(1,0,0);
+
+            fireTransforms[i].gameObject.SetActive(true);
+
+            /*switch (power)
+            { case 1:
+                    
+                    break;
+                case 2:
+                   
+                    break;
+                case 3:
+
+                    break;
+
+                default:
+                    break;
+            }*/
+          
+        }
+        //fireRoot에 power 숫자에 맞게 자식 추가
+
+
+    }
+
 }

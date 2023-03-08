@@ -18,15 +18,6 @@ public class Bullet : PoolObject
        StartCoroutine(LifeOver(5.0f));
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        //Destroy(this.gameObject,3.0f); //this만 두면 script가 사라짐. => script가 적용된 gameObject를 삭제해라.
-    }
-
-   
-        
-
         //local좌표와 world좌표
         //local좌표 : 각 오브젝트 별 기준으로 한 좌표계
         //world좌표 : 맵을 기준으로 한 좌표계
@@ -34,6 +25,9 @@ public class Bullet : PoolObject
     // Update is called once per frame
     void Update()
     {
+        // 초당 speed의 속도로 오른쪽방향으로 이동(로컬 좌표를 기준으로 한 방향)
+        //transform.Translate(Time.deltaTime * speed * Vector2.right); 
+        //transform.Translate(Time.deltaTime * speed * transform.right, Space.World); 
         transform.position += (Time.deltaTime * speed * transform.right); //->Vector2.right은 월드좌표로 이동함.
         //위와 동일한 코드
         //transform.Translate(Time.deltaTime * speed * Vector2.right,Space.Self);
@@ -48,9 +42,7 @@ public class Bullet : PoolObject
         {
             GameObject obj = Factory.Inst.GetObject(hitType); //hit 이팩트 풀에서 가져오기
             obj.transform.position = collision.contacts[0].point; // 충돌지점으로 이동시키기
-            obj.gameObject.SetActive(false);
-
-            gameObject.SetActive(false);
+            StartCoroutine(LifeOver(0));
         }
         
        
