@@ -5,23 +5,23 @@ using UnityEngine;
 
 public class LifePanel : MonoBehaviour
 {
-    TextMeshProUGUI Text;
+    TextMeshProUGUI lifeText;
     private void Awake()
     {
         Transform textTransform = transform.GetChild(2);
-        Text = textTransform.GetComponent<TextMeshProUGUI>();
+        lifeText = textTransform.GetComponent<TextMeshProUGUI>();
 
     }
 
     private void Start()
     {
-        Player player = FindObjectOfType<Player>();
-        player.onLifeChange += updateLife;
+        Player player = FindObjectOfType<Player>();         // 플레이어 찾아서
+        player.onLifeChange += Refresh;                     //델리게이트에 함수 등록
     }
 
-    private void updateLife(int life)
+    private void Refresh(int life)
     {
-        Text.text = life.ToString();
+        lifeText.text = life.ToString();
     }
 
 }

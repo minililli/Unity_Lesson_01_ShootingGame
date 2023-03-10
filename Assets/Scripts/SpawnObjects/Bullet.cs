@@ -39,14 +39,13 @@ public class Bullet : PoolObject
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Enemy")) // 부딪친 게임오브젝트의 태그가 "Enemy"일때만 처리  
-                                                      //if(collision.gameObject.tag == "Enemy");는 절대로 하지 말 것. 더 느리고, 메모리도 많이 쓴다. 
-     
         {
-            GameObject obj = Factory.Inst.GetObject(hitType); //hit 이팩트 풀에서 가져오기
+            GameObject obj = Factory.Inst.GetObject(PoolObjectType.Hit); //hit 이팩트 풀에서 가져오기
             obj.transform.position = collision.contacts[0].point; // 충돌지점으로 이동시키기
-            obj.SetActive(false);
+
+
             StartCoroutine(LifeOver(0));
-            
+
         }
 
 

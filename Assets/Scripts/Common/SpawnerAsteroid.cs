@@ -14,7 +14,7 @@ public class SpawnerAsteroid : Spawner
         destination = transform.GetChild(0);                          //첫번째 자식으로 만들기
     }
 
-    protected override void OnSpawn(Enemy_Base enemy)
+    protected override void OnSpawn(EnemyBase enemy)
     {
         base.OnSpawn(enemy);
 

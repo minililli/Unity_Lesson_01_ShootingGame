@@ -43,7 +43,7 @@ public class Spawner : MonoBehaviour
             GameObject obj = Factory.Inst.GetObject(objectType);
 
             // 생성한 게임오브젝트에서 EnemyBase 컴포넌트 가져오기
-            Enemy_Base enemy = obj.GetComponent<Enemy_Base>();
+            EnemyBase enemy = obj.GetComponent<EnemyBase>();
             enemy.TargetPlayer = player;                    // EnemyBase에 플레이어 설정
             enemy.transform.position = transform.position;  // 스포너 위치로 이동
 
@@ -52,7 +52,7 @@ public class Spawner : MonoBehaviour
         }
     }
 
-    protected virtual void OnSpawn(Enemy_Base enemy)
+    protected virtual void OnSpawn(EnemyBase enemy)
     {
         float r = Random.Range(minY, maxY);             // 랜덤하게 적용할 기준 높이 구하고
         enemy.transform.Translate(Vector3.up * r);      // 랜덤하게 높이 적용하기

@@ -13,6 +13,7 @@ public class Asteroid : AsteroidBase
     public PoolObjectType childType = PoolObjectType.Asteroidsmall;
 
     public int splitCount = 3;
+    
 
     //최소 수명
     public float minLifeTime = 4.0f;
@@ -32,12 +33,14 @@ public class Asteroid : AsteroidBase
 
     protected override void Awake()
     {
+
         base.Awake();
         anim = GetComponent<Animator>();
     }
 
     protected override void OnEnable()
     {
+        maxHitPoint = Random.Range(2,5);                            //임의추가-
         base.OnEnable();
         score = 30;
         float lifeTime = Random.Range(minLifeTime, maxLifeTime);

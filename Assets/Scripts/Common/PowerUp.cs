@@ -87,17 +87,6 @@ public class PowerUp : PoolObject
         dir = dir.normalized;
     }
 
-    /*else
-    {
-        Debug.Log("allRandom.else 실행");
-
-        dir = playerTransform.position;
-        dir = Random.insideUnitCircle;
-        float dirangle = Random.Range(-90.0f, 90.0f);
-        playerTransform.rotation = Quaternion.AngleAxis(dirangle, playerTransform.position);
-        dir = dir.normalized;
-    }*/
-
     IEnumerator DirChange()
     {
         while (true)
@@ -113,7 +102,7 @@ public class PowerUp : PoolObject
 
         {
             dir = Vector2.Reflect(dir, collision.contacts[0].normal);
-            if(dirChange>5)
+            if(dirChangeCount>5)
             {
                 
             }

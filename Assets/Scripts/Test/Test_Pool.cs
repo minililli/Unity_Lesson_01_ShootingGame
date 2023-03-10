@@ -32,16 +32,16 @@ public class Test_Pool : Test_Base
     }
     protected override void Test3(InputAction.CallbackContext _)
     {
-        PoolObject obj = pool3.GetObject(spawnTransforms[1]);
+        PoolObject obj = pool3.GetObject(spawnTransforms[2]);
     }
     protected override void Test4(InputAction.CallbackContext _)
     {
-        PoolObject obj = pool4.GetObject(spawnTransforms[1]);
+        PoolObject obj = pool4.GetObject(spawnTransforms[3]);
     }
 
     protected override void Test5(InputAction.CallbackContext _)
     {
-        PoolObject obj = pool5.GetObject(spawnTransforms[1]);
+        PoolObject obj = pool5.GetObject(spawnTransforms[4]);
     }
 
 }

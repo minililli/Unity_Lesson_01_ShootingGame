@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 3556987887117742845}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 11.8, y: 0, z: 0}
-  m_LocalScale: {x: 1.49, y: 1.49, z: 1.49}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
@@ -125,7 +125,9 @@ MonoBehaviour:
   rotateSpeed: 0
   score: 0
   destroyEffect: 6
-  explosionType: 7
+  startSpeed: 10
+  appearTime: 0.5
+  waitTime: 5
 --- !u!70 &4142332401230591392
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

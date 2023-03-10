@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SpawnerEnemy : Spawner
 {
-    protected override void OnSpawn(Enemy_Base enemy)
+    protected override void OnSpawn(EnemyBase enemy)
     {
         Fighter fighter = enemy as Fighter;
         if (fighter != null)

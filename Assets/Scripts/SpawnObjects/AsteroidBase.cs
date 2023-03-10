@@ -5,7 +5,7 @@ using UnityEditor.UI;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class AsteroidBase : Enemy_Base
+public class AsteroidBase : EnemyBase
 {
 
     [Header("운석 기본데이터------------------")]

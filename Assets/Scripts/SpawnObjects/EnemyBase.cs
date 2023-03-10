@@ -1,9 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SocialPlatforms.Impl;
 
-public class Enemy_Base : PoolObject
+public class EnemyBase : PoolObject
 {
     [Header("적 기본 데이터--------------------")]
 
@@ -36,6 +35,7 @@ public class Enemy_Base : PoolObject
 
     public PoolObjectType destroyEffect = PoolObjectType.Explosion;
 
+
     /// 플레이어에 대한 참조
     /// </summary>
     /// 
@@ -67,7 +67,7 @@ public class Enemy_Base : PoolObject
 
     protected virtual void OnHit()
     {
-
+      
     }
 
     protected void Attacked()
@@ -77,6 +77,7 @@ public class Enemy_Base : PoolObject
         hitPoint--;     //맞으면 hitpoint 감소
        if(hitPoint < 1)
         {
+
             Crush();
         }
 
@@ -85,6 +86,11 @@ public class Enemy_Base : PoolObject
     //부서지면 무조건 실행해야 할 일들 처리
     protected void Crush()
     {
+
+        GameObject obj = Factory.Inst.GetObject(destroyEffect); // 터지는 이팩트 생성
+        obj.transform.position = transform.position;    // 이팩트 위치 변경
+
+
         if (isSelfCrushed)
         { score = 0; }
 
@@ -92,20 +98,18 @@ public class Enemy_Base : PoolObject
         {
             isCrushed = true;
 
-            GameObject obj = Factory.Inst.GetObject(destroyEffect);
-            obj.transform.position = transform.position;
-
             gameObject.SetActive(false);
-        }
 
-        OnCrush();
+            OnCrush();
+        }
 
     }
 
     //부서질때 상속받는 
     protected virtual void OnCrush()
     {
-         player?.AddScore(score); 
+
+        player?.AddScore(score); 
     }
 
 }

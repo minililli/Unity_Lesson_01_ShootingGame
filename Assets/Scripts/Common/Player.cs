@@ -8,34 +8,45 @@ using UnityEngine.UIElements;
 public class Player : MonoBehaviour
 {
 
-    Animator anim;
+    private Animator anim;
     //2. InputSystem을 통한 움직임 구현
-    PlayerInputActions inputActions; //InputActions 인스턴스 생성
-    Vector2 inputDir = Vector2.zero; //움직임 스무스하게 하기위한 작업 2.초기화
+    private PlayerInputActions inputActions; //InputActions 인스턴스 생성
+    private Vector2 inputDir = Vector2.zero; //움직임 스무스하게 하기위한 작업 2.초기화
     Transform fireTransform;
-    Rigidbody2D rigid;
-    SpriteRenderer spriteRenderer;
+    private Rigidbody2D rigid;
+    private SpriteRenderer spriteRenderer;
 
     [Header("플레이어의 기본정보")]
     // 움직이는 속도 수정
     public float speed = 10.0f;
-    int initialLife = 3;
+    public int initialLife = 3;
     private int life;
     public int Life
     {
         get => life;
         set
         {
-            life = value;
-            Debug.Log($"{life}");
+            if (!isDead)
+            {
+                if (life > value) //라이프가 감소한 상황이면
+                {
+                    onHit();                //맞았을 때의 동작이 있는 함수 실행
+                }
+              
+                life = value;
+                Debug.Log($"{life}");
+                onLifeChange?.Invoke(life); //델리게이트에 연결된 함수들 실행
+            }
 
             if(life<=0)
             {
-                OnDie();
-                onLifeChange?.Invoke(Life);
+                life = 0;
+                OnDie();                    //죽었을 때의 동작이 있는 함수 실행
             }
         }
     }
+
+   
 
     public Action<int> onLifeChange;
     public Action<Player> onDie;
@@ -56,13 +67,13 @@ public class Player : MonoBehaviour
     GameObject fireFlash;
 
     //무적상태관련변수
-    float invincibleTime = 2;
+    float invincibleTime = 2.0f;
     bool isDead = false;
     bool isInvincibleMode = false;
     //무적일 때 시간 누적용(MathF.COS에서 사용할 용도)
     private float timeElapsed = 0.0f;
 
-
+    
 
     [Header("점수관련 정보")]
     private int score = 0;
@@ -94,7 +105,7 @@ public class Player : MonoBehaviour
         rigid = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>(); // 한번 찾아놓고 쓸 것_성능문제
         inputActions = new PlayerInputActions(); // new를 유일하게 사용하는 PlayerInputActions();
-        SpriteRenderer spriteRenderer= GetComponent<SpriteRenderer>();
+        spriteRenderer= GetComponent<SpriteRenderer>();
         
         fireTransform = transform.GetChild(0);
         fireFlash = transform.GetChild(1).gameObject;
@@ -160,7 +171,6 @@ public class Player : MonoBehaviour
         if (collision.gameObject.CompareTag("Enemy"))
         {
             Life--;
-
         }
         else if(collision.gameObject.CompareTag("PowerUp"))
         {
@@ -169,24 +179,12 @@ public class Player : MonoBehaviour
         }    
         
     }
-
-    IEnumerator onInvincible()
-    {
-        gameObject.layer = LayerMask.NameToLayer("Invincible");     // 레이어 변경
-        isInvincibleMode= true;                                     // 무적모드 실행했다고 표시
-        timeElapsed = 0.0f;                                         // 시간 카운터 초기화
-        yield return new WaitForSeconds(invincibleTime);            // invincibleTime동안 대기
-        spriteRenderer.color = Color.white;                         // 색깔변한 상태끝날 때를 대비해서 초기화
-        isInvincibleMode = false;                                   //무적 모드 끝났다고 표시
-        gameObject.layer = LayerMask.NameToLayer("Player");         // 레이어 되돌리기
-    }
-
     private void Update()
     {
-        if (isInvincibleMode)
+        if(isInvincibleMode)
         {
-            timeElapsed += Time.deltaTime * 30;
-            float alpha = (Mathf.Cos(timeElapsed) + 1.0f) * 0.5f;
+            timeElapsed += Time.deltaTime*30;
+            float alpha = (Mathf.Cos(timeElapsed) + 1.0f) * 0.5f;           //cos을 1~0~1로 변경하는 작업
             spriteRenderer.color = new Color(1, 1, 1, alpha);
         }
     }
@@ -203,14 +201,15 @@ public class Player : MonoBehaviour
 
         if (isDead)
         {
-
             rigid.AddForce(Vector2.left * 0.3f, ForceMode2D.Impulse);
             rigid.AddTorque(30.0f);
         }
+        
         else
         {
             rigid.MovePosition(rigid.position + Time.fixedDeltaTime * speed * inputDir);
         }
+       
     }
 
     private void OnFireStart(InputAction.CallbackContext context)
@@ -237,6 +236,31 @@ public class Player : MonoBehaviour
             yield return new WaitForSeconds(fireInterval);
         }
 
+    }
+    private void onHit()
+    {
+        Power--;
+        StartCoroutine(EnterInvincibleMode());
+    }
+    /// <summary>
+    /// 무적상태 진입용 코루틴
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator EnterInvincibleMode()
+    {
+        /*if (isInvincibleMode)
+        {
+            timeElapsed += Time.deltaTime * 30;
+            float alpha = (Mathf.Cos(timeElapsed) + 1.0f) * 0.5f;
+            spriteRenderer.color = new Color(1, 1, 1, alpha);
+        }*/
+        gameObject.layer = LayerMask.NameToLayer("Invincible");     // 레이어 변경
+        isInvincibleMode = true;                                     // 무적모드 실행했다고 표시
+        timeElapsed = 0.0f;                                         // 시간 카운터 초기화
+        yield return new WaitForSeconds(invincibleTime);            // invincibleTime동안 대기
+        spriteRenderer.color = Color.white;                         // 색깔변한 상태끝날 때를 대비해서 초기화
+        isInvincibleMode = false;                                   //무적 모드 끝났다고 표시
+        gameObject.layer = LayerMask.NameToLayer("Player");         // 레이어 되돌리기
     }
     private void OnDie()
     {

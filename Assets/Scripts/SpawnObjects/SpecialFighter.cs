@@ -3,16 +3,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpecialFighter : Enemy_Base
+public class SpecialFighter : EnemyBase
 {
     [Header("특수적 데이터------------------")]
     public float startSpeed = 10.0f;
     public float appearTime = 0.5f;
     public float waitTime = 5.0f;
+    
 
     protected override void OnEnable()
     {
-
+        score = 30;
+        maxHitPoint = 5;
         base.OnEnable();
         StopAllCoroutines();
         StartCoroutine(SpawnProduce());
