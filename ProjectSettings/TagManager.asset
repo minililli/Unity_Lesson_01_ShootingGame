@@ -6,7 +6,6 @@ TagManager:
   tags:
   - Enemy
   - Bullet
-  - Item
   - Border
   - PowerUp
   layers:
@@ -18,8 +17,8 @@ TagManager:
   - UI
   - Player
   - Bullet
-  - Enemy
   - Border
+  - Enemy
   - Item
   - 
   - 

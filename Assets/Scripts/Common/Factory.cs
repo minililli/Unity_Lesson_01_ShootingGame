@@ -26,7 +26,7 @@ public class Factory : Singleton<Factory>
     ExplosionEffectPool explosionPool;
     AsteroidPool asteroidPool;
     AsteroidsmallPool asteroidsmallPool;
-    PowerUpPool powerupPool;
+    PowerUpPool powerUpPool;
 
     protected override void PreInitialize()
     {
@@ -37,7 +37,7 @@ public class Factory : Singleton<Factory>
         explosionPool = GetComponentInChildren<ExplosionEffectPool>();
         asteroidPool = GetComponentInChildren<AsteroidPool>();
         asteroidsmallPool = GetComponentInChildren<AsteroidsmallPool>();
-        powerupPool = GetComponentInChildren<PowerUpPool>();
+        powerUpPool = GetComponentInChildren<PowerUpPool>();
 
     }
 
@@ -50,7 +50,7 @@ public class Factory : Singleton<Factory>
         explosionPool?.Initialize();
         asteroidPool?.Initialize();
         asteroidsmallPool?.Initialize();
-        powerupPool?.Initialize();
+        powerUpPool?.Initialize();
     }
 
 
@@ -101,5 +101,5 @@ public class Factory : Singleton<Factory>
 
     public AsteroidBase GetAsteroidSmall() => asteroidsmallPool?.GetObject();
 
-    public PowerUp GetPowerUp() => powerupPool?.GetObject();
+    public PowerUp GetPowerUp() => powerUpPool?.GetObject();
 }

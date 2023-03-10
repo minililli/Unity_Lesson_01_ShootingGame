@@ -358,4 +358,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   originalPrefab: {fileID: 5213604903312565089, guid: f3edb959de1cceb4fbc9a4b185605066, type: 3}
   poolSize: 64
-  asteroidType: 0
+  asteroidType: 3

@@ -11,7 +11,8 @@ public class ScoreBoard : MonoBehaviour
 
     float currentScore;
     int targetScore;
-    
+    float minScoreUpSpeed = 30.0f;
+
     [Range(1f,100.0f)]
     public float scoreupSpeed = 50.0f;
 
@@ -48,7 +49,8 @@ public class ScoreBoard : MonoBehaviour
     {
         if(currentScore < targetScore)
         {
-
+            //currentScore를 점수 차이에 비례해서 증가시킨다.(최저 minScoreUpSpeed);
+            float speed = Mathf.Max((targetScore - currentScore) * 5.0f, minScoreUpSpeed) ;
             currentScore += Time.deltaTime * scoreupSpeed; //currentScore를 초당 1씩 증가시킨다. 
             currentScore = Mathf.Min(currentScore, targetScore);
             score.text = $"{currentScore:f0}"; // 소수점아래 0개까지 증가시킨다.
