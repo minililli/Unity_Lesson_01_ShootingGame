@@ -9,6 +9,7 @@ public enum PoolObjectType
     Bullet = 0,
     Hit,
     Fighter,
+    SpecialFighter,
     Asteroid,
     Asteroidsmall,
     Explosion,
@@ -20,6 +21,7 @@ public class Factory : Singleton<Factory>
 {
     BulletPool bulletPool;
     FighterPool fighterPool;
+    SpecialFighterPool specialfighterPool;
     HitEffectPool hitPool;
     ExplosionEffectPool explosionPool;
     AsteroidPool asteroidPool;
@@ -30,6 +32,7 @@ public class Factory : Singleton<Factory>
     {
         bulletPool = GetComponentInChildren<BulletPool>();
         fighterPool = GetComponentInChildren<FighterPool>();
+        specialfighterPool = GetComponentInChildren<SpecialFighterPool>();
         hitPool = GetComponentInChildren<HitEffectPool>();
         explosionPool = GetComponentInChildren<ExplosionEffectPool>();
         asteroidPool = GetComponentInChildren<AsteroidPool>();
@@ -42,6 +45,7 @@ public class Factory : Singleton<Factory>
     {
         bulletPool?.Initialize();
         fighterPool?.Initialize();
+        specialfighterPool?.Initialize();
         hitPool?.Initialize();
         explosionPool?.Initialize();
         asteroidPool?.Initialize();
@@ -66,17 +70,18 @@ public class Factory : Singleton<Factory>
             case PoolObjectType.Fighter:
                 result = GetFighter().gameObject;
                 break;
+            case PoolObjectType.SpecialFighter:
+                result = GetSpecialFighter().gameObject;
+                break;
             case PoolObjectType.Explosion:
                 result = GetExplosionEffect().gameObject;
                 break;
             case PoolObjectType.Asteroid:
                 result = GetAsteroid().gameObject;
                 break;
-
             case PoolObjectType.Asteroidsmall:
                 result = GetAsteroidSmall().gameObject;
                 break;
-
             case PoolObjectType.PowerUp:
                 result = GetPowerUp().gameObject;
                 break;
@@ -88,7 +93,7 @@ public class Factory : Singleton<Factory>
     public Effect GetHitEffect() => hitPool?.GetObject();
 
     public Fighter GetFighter() => fighterPool?.GetObject();
-
+    public SpecialFighter GetSpecialFighter() => specialfighterPool?.GetObject();
     public Effect GetExplosionEffect() => explosionPool?.GetObject();
     
     //운석하나 꺼내는 함수

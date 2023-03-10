@@ -22,15 +22,6 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
-                },
-                {
-                    "name": "Bomb",
-                    "type": "Button",
-                    "id": "53681f0e-cfd2-4926-bfa7-14f7b7aa92bb",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -152,17 +143,6 @@
                     "processors": "",
                     "groups": "KeyboardMouse",
                     "action": "Fire",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "f39fefa0-1e01-48b1-8f43-18fabd86876a",
-                    "path": "<Keyboard>/b",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "KeyboardMouse",
-                    "action": "Bomb",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -40,21 +40,6 @@ public class PowerUp : PoolObject
             StopAllCoroutines();
             StartCoroutine(DirChange());
         }
-
-        /*if (player != null)
-        {
-            playerTransform = player.transform;
-            float random = Random.Range(0.0f, 1.0f);
-
-            if (random < dirChange)
-            {
-                Debug.Log("dirChange 실행");
-                isChanged = true;
-            }
-            else { isChanged = false; }
-            SetRandomDirection(isChanged);
-
-        }*/
     }
     private void Update()
     {
@@ -107,6 +92,10 @@ public class PowerUp : PoolObject
 
         {
             dir = Vector2.Reflect(dir, collision.contacts[0].normal);
+        }
+        if (collision.gameObject.CompareTag("Player")) 
+        {
+            gameObject.SetActive(false);
         }
     }
 }

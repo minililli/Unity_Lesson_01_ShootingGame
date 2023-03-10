@@ -8,11 +8,12 @@ TagManager:
   - Bullet
   - Item
   - Border
+  - PowerUp
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Background
   - Water
   - UI
   - Player

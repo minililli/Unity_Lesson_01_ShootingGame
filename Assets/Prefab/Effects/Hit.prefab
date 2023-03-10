@@ -116,9 +116,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 4927192075506165811}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fd73e332a3764c34ab4518ec10a9081e, type: 3}
+  m_Script: {fileID: 11500000, guid: d5738c1528fda2d48953b76e6896d816, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  originalPrefab: {fileID: 4927192075506165811, guid: 3b2bf7da22af18f4bb30bb65b81198eb, type: 3}
+  poolSize: 64
 --- !u!82 &4652702717672874636
 AudioSource:
   m_ObjectHideFlags: 0

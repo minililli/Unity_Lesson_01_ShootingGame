@@ -2,6 +2,8 @@ using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using System;
+using UnityEngine.InputSystem;
 using UnityEngine;
 
 
@@ -17,15 +19,6 @@ public class Bullet : PoolObject
        StopAllCoroutines();
        StartCoroutine(LifeOver(5.0f));
     }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        //Destroy(this.gameObject,3.0f); //this만 두면 script가 사라짐. => script가 적용된 gameObject를 삭제해라.
-    }
-
-   
-        
 
         //local좌표와 world좌표
         //local좌표 : 각 오브젝트 별 기준으로 한 좌표계

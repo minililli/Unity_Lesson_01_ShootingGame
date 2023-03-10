@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3882091216635185924}
   m_Layer: 10
   m_Name: Text (TMP)
-  m_TagString: Untagged
+  m_TagString: PowerUp
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -184,7 +184,7 @@ GameObject:
   - component: {fileID: 3882091216708685913}
   m_Layer: 10
   m_Name: Capsule (1)
-  m_TagString: Untagged
+  m_TagString: PowerUp
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -270,7 +270,7 @@ GameObject:
   - component: {fileID: 3882091217326607111}
   m_Layer: 10
   m_Name: PowerUp
-  m_TagString: Item
+  m_TagString: PowerUp
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -306,7 +306,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 5
-  dirChange: 0.6
+  dirChange: 0.4
   dirChangeinterval: 5
 --- !u!70 &3882091217326607104
 CapsuleCollider2D:
@@ -332,9 +332,9 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3882091217326607107}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
-  m_UseFullKinematicContacts: 0
+  m_UseFullKinematicContacts: 1
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
@@ -357,7 +357,7 @@ GameObject:
   - component: {fileID: 3882091217661943677}
   m_Layer: 10
   m_Name: Capsule
-  m_TagString: Untagged
+  m_TagString: PowerUp
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

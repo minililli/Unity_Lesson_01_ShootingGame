@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class PowerUpPool : ObjectPool<PowerUp>
 {
-    public PoolObjectType PowerupType;
+
 }

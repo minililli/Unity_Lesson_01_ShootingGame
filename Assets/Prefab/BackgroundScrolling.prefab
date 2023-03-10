@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2631245297606967332}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: BackgroundScrolling
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -44,7 +44,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6665242500630610195}
   - component: {fileID: 6665242500630610196}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: bg-back
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -128,7 +128,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6665242500744150793}
   - component: {fileID: 6665242500744150794}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: bg-stars (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -211,7 +211,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6665242500778118273}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: BG_Slot (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -245,7 +245,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6665242500829255665}
   - component: {fileID: 6665242500829255664}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: bg-stars
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -329,7 +329,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6665242501195145764}
   - component: {fileID: 6665242501195145765}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: bg-back (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -412,7 +412,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6665242501269327271}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: BG_Slot (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -446,7 +446,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6665242501309514948}
   - component: {fileID: 6665242501309514949}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: BackgroundImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -494,7 +494,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6665242501391313438}
   - component: {fileID: 6665242501391313439}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: BG_Stars
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -541,7 +541,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6665242501548298872}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: BG_Slot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -575,7 +575,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6665242501994451329}
   - component: {fileID: 6665242501994451330}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: bg-back
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -660,7 +660,7 @@ GameObject:
   - component: {fileID: 6665242502023503769}
   - component: {fileID: 6665242502023503768}
   - component: {fileID: 6665242502023503770}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: bg-planet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -761,7 +761,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6665242502153994228}
   - component: {fileID: 6665242502153994229}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: bg-stars (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -845,7 +845,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6665242502175052713}
   - component: {fileID: 6665242502175052714}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: bg-back (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -929,7 +929,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6665242502365619674}
   - component: {fileID: 6665242502365619675}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: bg-back (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1013,7 +1013,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6665242502464951660}
   - component: {fileID: 6665242502464951661}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: bg-back
   m_TagString: Untagged
   m_Icon: {fileID: 0}

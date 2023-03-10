@@ -33,7 +33,7 @@ public class Enemy_Base : PoolObject
    
     protected bool isSelfCrushed = false;
 
-   
+
     public PoolObjectType destroyEffect = PoolObjectType.Explosion;
 
     /// 플레이어에 대한 참조
@@ -105,7 +105,6 @@ public class Enemy_Base : PoolObject
     //부서질때 상속받는 
     protected virtual void OnCrush()
     {
-        
          player?.AddScore(score); 
     }
 

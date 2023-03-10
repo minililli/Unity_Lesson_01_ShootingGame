@@ -87,10 +87,8 @@ public class Singleton<T> : MonoBehaviour where T : Component
     //mode : 로드 모드
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        
         PreInitialize();
         Initialize();
-
     }
 
     protected virtual void PreInitialize()
