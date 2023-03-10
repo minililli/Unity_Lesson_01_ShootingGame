@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2102313167630755623}
   - component: {fileID: 4142332401230591392}
   - component: {fileID: 8090987365954663079}
-  m_Layer: 8
+  m_Layer: 9
   m_Name: SpecialFighter 1
   m_TagString: Enemy
   m_Icon: {fileID: 0}

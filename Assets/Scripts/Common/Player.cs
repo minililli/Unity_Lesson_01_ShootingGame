@@ -2,19 +2,23 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Processors;
 
 public class Player : MonoBehaviour
 {
+
     Animator anim;
     //2. InputSystem을 통한 움직임 구현
     PlayerInputActions inputActions; //InputActions 인스턴스 생성
     Vector2 inputDir = Vector2.zero; //움직임 스무스하게 하기위한 작업 2.초기화
     Transform fireTransform;
     Rigidbody2D rigid;
+    SpriteRenderer spriteRenderer;
 
     [Header("플레이어의 기본정보")]
     // 움직이는 속도 수정
     public float speed = 10.0f;
+    int initialLife = 3;
     private int life;
     public int Life
     {
@@ -22,8 +26,18 @@ public class Player : MonoBehaviour
         set
         {
             life = value;
+            Debug.Log($"{life}");
+
+            if(life<=0)
+            {
+                OnDie();
+                onLifeChange?.Invoke(Life);
+            }
         }
     }
+
+    public Action<int> onLifeChange;
+    public Action onDie;
 
     [Header("피격관련 정보")]
     // 플레이어의 총알 타입
@@ -34,11 +48,17 @@ public class Player : MonoBehaviour
         get => power;
         set => power = value;
     }
-    public float fireInterval = 0.5f;
 
+    public float fireInterval = 0.5f;
     //연사용 코루틴을 저장할 변수
     IEnumerator fireCoroutine;
     GameObject fireFlash;
+
+    //무적상태관련변수
+    bool isDead = false;
+    bool isInvincibleMode = false;
+    //무적일 때 시간 누적용(MathF.COS에서 사용할 용도)
+    private float timeElapsed = 0.0f;
 
 
 
@@ -64,6 +84,7 @@ public class Player : MonoBehaviour
         //Debug.Log($"점수 : {score}");
     }
 
+    //--------------------------------------------------------------------------------------------------------
 
     // Awake 이 게임 오브젝트가 생성 완료 되었을 때 실행되는 함수 - Start()보다 더 빠름.
     private void Awake()
@@ -80,7 +101,11 @@ public class Player : MonoBehaviour
         fireCoroutine = FireCoroutine();
 
     }
-
+    private void Start()
+    {
+        Power = 1;
+        Life = initialLife;
+    }
     //이 게임 오브젝트가 완성된 이후 활성화 할 때 실행되는 함수
     private void OnEnable()
     {
@@ -108,32 +133,6 @@ public class Player : MonoBehaviour
         inputActions.Player.Fire.canceled -= OnFireStop;
         inputActions.Player.Fire.performed -= OnFireStart;
         inputActions.Player.Disable();
-    }
-
-    private void OnFireStart(InputAction.CallbackContext context)
-    {
-        //Debug.Log("Fire");
-        StartCoroutine(fireCoroutine);
-
-    }
-    private void OnFireStop(InputAction.CallbackContext context)
-    {
-        StopCoroutine(fireCoroutine);
-
-    }
-
-
-    IEnumerator FireCoroutine()
-    {
-        while(true)
-        {
-
-            GameObject obj = Factory.Inst.GetObject(bulletType);     
-            obj.transform.position = fireTransform.position;
-            StartCoroutine(FlashEffect());
-            yield return new WaitForSeconds(fireInterval);
-        }
-
     }
 
     IEnumerator FlashEffect()
@@ -167,6 +166,12 @@ public class Player : MonoBehaviour
         
     }
 
+    private void Update()
+    {
+        timeElapsed += Time.deltaTime * 30;
+        float alpha = (Mathf.Cos(timeElapsed) + 1.0f) * 0.5f;
+        spriteRenderer.color = new Color(1, 1, 1, alpha);
+    }
 
     private void FixedUpdate()
     {
@@ -178,6 +183,62 @@ public class Player : MonoBehaviour
         //rigid.MovePosition(); //특정위치로 순간이동시키기. 움직일때 막히면 거기서부터는 진행안함. 관성이 없는 움직임시킬때 유용함.
         //rigid Addforce(); //특정방향으로 힘을 가하기. 움직일때 막히면 거기서부터는 진행안함. 관성이있음. 
 
-        rigid.MovePosition(rigid.position + Time.fixedDeltaTime * speed * inputDir);
+        if (isDead)
+        {
+            rigid.AddForce(Vector2.left * 0.3f, ForceMode2D.Impulse);
+            rigid.AddTorque(30.0f);
+        }
+        else
+        {
+            rigid.MovePosition(rigid.position + Time.fixedDeltaTime * speed * inputDir);
+        }
     }
+
+    private void OnFireStart(InputAction.CallbackContext context)
+    {
+        //Debug.Log("Fire");
+        StartCoroutine(fireCoroutine);
+
+    }
+    private void OnFireStop(InputAction.CallbackContext context)
+    {
+        StopCoroutine(fireCoroutine);
+
+    }
+
+
+    IEnumerator FireCoroutine()
+    {
+        while (true)
+        {
+
+            GameObject obj = Factory.Inst.GetObject(bulletType);
+            obj.transform.position = fireTransform.position;
+            StartCoroutine(FlashEffect());
+            yield return new WaitForSeconds(fireInterval);
+        }
+
+    }
+    private void OnDie()
+    {
+        isDead = true;
+        life = 0;
+
+        Collider2D bodyCollider = GetComponent<Collider2D>();
+        bodyCollider.enabled = false;
+
+        InputDisable();
+        inputDir = Vector3.zero;
+
+        StopCoroutine(fireCoroutine);
+
+        //무적모드 취소
+        spriteRenderer.color = Color.white;
+        isInvincibleMode = false;
+        gameObject.layer = LayerMask.NameToLayer("Player");
+
+        rigid.gravityScale = 1.0f;
+        rigid.freezeRotation = false;
+    }
+
 }
