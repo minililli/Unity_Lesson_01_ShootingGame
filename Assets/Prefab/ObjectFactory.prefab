@@ -9,8 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3266737440434278897}
+  - component: {fileID: 4024189787305617552}
   m_Layer: 8
-  m_Name: GameObject
+  m_Name: SpecialFighterPool
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -31,6 +32,20 @@ Transform:
   m_Father: {fileID: 7005297174518211605}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4024189787305617552
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2076800921210967897}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad375967918729f49a52ccda0761d867, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  originalPrefab: {fileID: 3556987887117742845, guid: 354b6081bb525a3489a0ca5ff6d0faac, type: 3}
+  poolSize: 10
 --- !u!1 &5794049822766930645
 GameObject:
   m_ObjectHideFlags: 0
@@ -75,7 +90,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e1606f83e1569a4f84eb56e16202491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  originalPrefab: {fileID: 4045547283057484138, guid: 8207ecc68e1b8ea478bf45c8b9f0131d, type: 3}
+  originalPrefab: {fileID: 4045547283057484138, guid: 1501689f6db3e5547a89c11d97815139, type: 3}
   poolSize: 64
 --- !u!1 &7005297174518211604
 GameObject:
@@ -113,6 +128,7 @@ Transform:
   - {fileID: 8482464317931629433}
   - {fileID: 977811306656297057}
   - {fileID: 3266737440434278897}
+  - {fileID: 7223296764951787189}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -218,7 +234,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bdeb13ea635acc74eabc5ff94e6987e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  originalPrefab: {fileID: 3872385757189620230, guid: 23e7de07592ef8f4d889255542d905ac, type: 3}
+  originalPrefab: {fileID: 3872385757189620230, guid: 16ac042a850b2fb4483fe86ed0d9c787, type: 3}
   poolSize: 64
 --- !u!1 &7005297175407453916
 GameObject:
@@ -312,6 +328,52 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   originalPrefab: {fileID: 8938052077853560911, guid: fcda6d258e50c7a41a359dfcaf02967e, type: 3}
   poolSize: 64
+--- !u!1 &8931672040835080880
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7223296764951787189}
+  - component: {fileID: 3633689547696255501}
+  m_Layer: 0
+  m_Name: PowerUpPool
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7223296764951787189
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8931672040835080880}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7005297174518211605}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3633689547696255501
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8931672040835080880}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7f3754f4bb743549bdff897b1ac41f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  originalPrefab: {fileID: 3882091217326607107, guid: aa006ba979d34fa42ae31e82e06ac51f, type: 3}
+  poolSize: 64
 --- !u!1 &8974933784962828970
 GameObject:
   m_ObjectHideFlags: 0
@@ -356,6 +418,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67ba787f712b7a34584c93a3ddbc1a9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  originalPrefab: {fileID: 5213604903312565089, guid: f3edb959de1cceb4fbc9a4b185605066, type: 3}
+  originalPrefab: {fileID: 5213604903312565089, guid: 06ac314891057f1439bd3aa43c86cab3, type: 3}
   poolSize: 64
   asteroidType: 3

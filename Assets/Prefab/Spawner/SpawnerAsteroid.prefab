@@ -76,7 +76,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e18d99720f64544aa3b83dd0ec37a77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnPrefab: {fileID: 5213604903312565089, guid: f3edb959de1cceb4fbc9a4b185605066, type: 3}
+  objectType: 4
   minY: -4
   maxY: 4
   interval: 2

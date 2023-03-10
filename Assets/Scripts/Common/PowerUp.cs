@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PowerUp : PoolObject
 {
+
     //이동속도
     public float moveSpeed = 2.0f;
     //이동방향
@@ -11,21 +12,41 @@ public class PowerUp : PoolObject
 
     //플레이어의 트랜스폼
     Transform playerTransform;
+    Animator anim;
 
 
 
     //기본적으로 랜덤항향이 지정되지만, 60%확률로 무조건 플레이어의 반대방향으로 진행하게 만들기
     [Range(0f, 1f)]
-    public float dirChange = 35.0f;
+    public float dirChange = 0.4f;
     //방향 전환 시간 간격
     public float dirChangeinterval = 5.0f;
     //bool isChanged = false;
+
+    const int dirChangeCountMax = 5;
+    int dirChangeCount = dirChangeCountMax;
+
+    int DirChangeCount
+    {
+        get => dirChangeCount;
+        set
+        {
+            dirChange = value;
+            anim.SetInteger("Count", dirChangeCount);
+            if (dirChangeCount <= 0)
+            {
+                StopAllCoroutines();
+            }
+            
+        }
+    }
 
     WaitForSeconds changeInterval;
 
     private void Awake()
     {
         //player = FindObjectOfType<Player>();
+        Animation anim = GetComponent<Animation>();
         changeInterval = new WaitForSeconds(dirChangeinterval);
     }
 
@@ -35,7 +56,7 @@ public class PowerUp : PoolObject
         {
             GameObject player = GameObject.FindGameObjectWithTag("Player");
             playerTransform = player.transform;
-            SetRandomDirection(true); // 시작할 때 랜더방향 설정하기
+            SetRandomDirection(true); // 시작할 때 랜덤방향 설정하기
 
             StopAllCoroutines();
             StartCoroutine(DirChange());
@@ -92,6 +113,10 @@ public class PowerUp : PoolObject
 
         {
             dir = Vector2.Reflect(dir, collision.contacts[0].normal);
+            if(dirChange>5)
+            {
+                
+            }
         }
         if (collision.gameObject.CompareTag("Player")) 
         {

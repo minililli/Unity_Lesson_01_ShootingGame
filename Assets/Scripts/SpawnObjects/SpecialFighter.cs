@@ -5,33 +5,42 @@ using UnityEngine;
 
 public class SpecialFighter : Enemy_Base
 {
-    [Header("비행기 데이터------------------")]
-    public PoolObjectType explosionType;
+    [Header("특수적 데이터------------------")]
+    public float startSpeed = 10.0f;
+    public float appearTime = 0.5f;
+    public float waitTime = 5.0f;
 
     protected override void OnEnable()
     {
-        maxHitPoint = 5;
-        score = 20;
+
         base.OnEnable();
+        StopAllCoroutines();
+        StartCoroutine(SpawnProduce());
+
+    }
+
+
+    IEnumerator SpawnProduce()
+    {
+        moveSpeed = startSpeed;                         // 처음에는 속도를 빠르게 설정
+        yield return new WaitForSeconds(appearTime);    // 등장에 걸리는 시간이 다될 때까지 빠르게 등장
+        moveSpeed = 0.0f;                               // 정지시키기
+        yield return new WaitForSeconds(waitTime);      // 대기 시간만큼 정지
+        moveSpeed = startSpeed;                         // 대기 시간이 끝나면 원래 속도로 돌아가기
     }
 
     private void Update()
     {
-        StopAllCoroutines();
-        StartCoroutine(specialMove());
+        // 초당 moveSpeed의 속도로 왼쪽으로 이동
+        transform.Translate(Time.deltaTime * moveSpeed * Vector3.left);
     }
 
-    IEnumerator specialMove()
+    protected override void OnCrush()
     {
-        while (true)
-        {
-            moveSpeed = 0;
-            transform.Translate(Time.deltaTime * moveSpeed * Vector2.left);
-            yield return new WaitForSeconds(1.0f);
-            moveSpeed = 6.0f;
-            transform.Translate(Time.deltaTime * moveSpeed * Vector2.left);
-            yield return new WaitForSeconds(2.0f);
-        }
+        base.OnCrush(); // 기존 폭파 처리
+
+        GameObject obj = Factory.Inst.GetObject(PoolObjectType.PowerUp);    // 파워업 아이템 생성
+        obj.transform.position = transform.position;        // 현재 내 위치로 옮기기
     }
 }
 

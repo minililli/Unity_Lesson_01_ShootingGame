@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Processors;
+using UnityEngine.UIElements;
 
 public class Player : MonoBehaviour
 {
@@ -37,7 +38,7 @@ public class Player : MonoBehaviour
     }
 
     public Action<int> onLifeChange;
-    public Action onDie;
+    public Action<Player> onDie;
 
     [Header("피격관련 정보")]
     // 플레이어의 총알 타입
@@ -55,6 +56,7 @@ public class Player : MonoBehaviour
     GameObject fireFlash;
 
     //무적상태관련변수
+    float invincibleTime = 2;
     bool isDead = false;
     bool isInvincibleMode = false;
     //무적일 때 시간 누적용(MathF.COS에서 사용할 용도)
@@ -92,7 +94,7 @@ public class Player : MonoBehaviour
         rigid = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>(); // 한번 찾아놓고 쓸 것_성능문제
         inputActions = new PlayerInputActions(); // new를 유일하게 사용하는 PlayerInputActions();
-        
+        SpriteRenderer spriteRenderer= GetComponent<SpriteRenderer>();
         
         fireTransform = transform.GetChild(0);
         fireFlash = transform.GetChild(1).gameObject;
@@ -158,19 +160,35 @@ public class Player : MonoBehaviour
         if (collision.gameObject.CompareTag("Enemy"))
         {
             Life--;
+
         }
-        if(collision.gameObject.CompareTag("PowerUp"))
+        else if(collision.gameObject.CompareTag("PowerUp"))
         {
             Power++;
+            collision.gameObject.SetActive(false);
         }    
         
     }
 
+    IEnumerator onInvincible()
+    {
+        gameObject.layer = LayerMask.NameToLayer("Invincible");     // 레이어 변경
+        isInvincibleMode= true;                                     // 무적모드 실행했다고 표시
+        timeElapsed = 0.0f;                                         // 시간 카운터 초기화
+        yield return new WaitForSeconds(invincibleTime);            // invincibleTime동안 대기
+        spriteRenderer.color = Color.white;                         // 색깔변한 상태끝날 때를 대비해서 초기화
+        isInvincibleMode = false;                                   //무적 모드 끝났다고 표시
+        gameObject.layer = LayerMask.NameToLayer("Player");         // 레이어 되돌리기
+    }
+
     private void Update()
     {
-        timeElapsed += Time.deltaTime * 30;
-        float alpha = (Mathf.Cos(timeElapsed) + 1.0f) * 0.5f;
-        spriteRenderer.color = new Color(1, 1, 1, alpha);
+        if (isInvincibleMode)
+        {
+            timeElapsed += Time.deltaTime * 30;
+            float alpha = (Mathf.Cos(timeElapsed) + 1.0f) * 0.5f;
+            spriteRenderer.color = new Color(1, 1, 1, alpha);
+        }
     }
 
     private void FixedUpdate()
@@ -185,6 +203,7 @@ public class Player : MonoBehaviour
 
         if (isDead)
         {
+
             rigid.AddForce(Vector2.left * 0.3f, ForceMode2D.Impulse);
             rigid.AddTorque(30.0f);
         }
@@ -227,18 +246,21 @@ public class Player : MonoBehaviour
         Collider2D bodyCollider = GetComponent<Collider2D>();
         bodyCollider.enabled = false;
 
+        GameObject effect = Factory.Inst.GetObject(PoolObjectType.Explosion);
+        effect.transform.position = transform.position;
+
         InputDisable();
         inputDir = Vector3.zero;
 
         StopCoroutine(fireCoroutine);
 
         //무적모드 취소
-        spriteRenderer.color = Color.white;
+        spriteRenderer.color = new Color(1, 1, 1, 1);
         isInvincibleMode = false;
         gameObject.layer = LayerMask.NameToLayer("Player");
-
-        rigid.gravityScale = 1.0f;
         rigid.freezeRotation = false;
+
+        onDie?.Invoke(this);
     }
 
 }

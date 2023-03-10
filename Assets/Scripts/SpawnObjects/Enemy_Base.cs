@@ -88,7 +88,7 @@ public class Enemy_Base : PoolObject
         if (isSelfCrushed)
         { score = 0; }
 
-            if (!isCrushed)
+        if (!isCrushed)
         {
             isCrushed = true;
 

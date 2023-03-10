@@ -105,12 +105,12 @@ MonoBehaviour:
   moveSpeed: 1.5
   rotateSpeed: 0
   score: 30
-  destroyEffect: 5
+  destroyEffect: 6
   maxmoveSpeed: 4
   minmoveSpeed: 2
   maxrotateSpeed: 360
   minrotateSpeed: 30
-  childType: 4
+  childType: 5
   splitCount: 3
   minLifeTime: 5
   maxLifeTime: 7

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3882091216635185924}
   m_Layer: 10
   m_Name: Text (TMP)
-  m_TagString: PowerUp
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -183,8 +183,8 @@ GameObject:
   - component: {fileID: 3882091216708685912}
   - component: {fileID: 3882091216708685913}
   m_Layer: 10
-  m_Name: Capsule (1)
-  m_TagString: PowerUp
+  m_Name: OuterCapsule
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -268,6 +268,7 @@ GameObject:
   - component: {fileID: 3882091217326607105}
   - component: {fileID: 3882091217326607104}
   - component: {fileID: 3882091217326607111}
+  - component: {fileID: 2102226811}
   m_Layer: 10
   m_Name: PowerUp
   m_TagString: PowerUp
@@ -308,6 +309,7 @@ MonoBehaviour:
   moveSpeed: 5
   dirChange: 0.4
   dirChangeinterval: 5
+  timeOut: 15
 --- !u!70 &3882091217326607104
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -345,6 +347,26 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!95 &2102226811
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3882091217326607107}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 82fa5ba2e2e1d7740b74e46c0adac830, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &3882091217661943679
 GameObject:
   m_ObjectHideFlags: 0
@@ -356,8 +378,8 @@ GameObject:
   - component: {fileID: 3882091217661943676}
   - component: {fileID: 3882091217661943677}
   m_Layer: 10
-  m_Name: Capsule
-  m_TagString: PowerUp
+  m_Name: InnerCapsule
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
