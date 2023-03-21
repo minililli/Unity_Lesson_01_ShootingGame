@@ -5,19 +5,24 @@ using UnityEngine;
 public class GameOverPanel : MonoBehaviour
 {
     Player player;
-    CanvasGroup canvas;
-
+    Animator anim;
+   
     private void Awake()
     {
-        player = FindObjectOfType<Player>();
-        canvas = GetComponent<CanvasGroup>();
+        anim = GetComponent<Animator>();
     }
-    private void OnEnable()
-    {
-        canvas.alpha = 0.0f;
-    }
+
     private void Start()
     {
-        player.onDie += (_) => canvas.alpha = 1.0f;
+        player = FindObjectOfType<Player>();
+        
+        player.onDie += ShowPanel;                          //플레이어의 onDie 델리게이트에 함수 등
+    }
+    
+    private void ShowPanel(Player player)
+    {
+        //transform.GetChild(0).gameObject.SetActive(true);   //GameOver 글자 비활성화 되어있던 것을 활성화
+        //gameObject.SetActive(true);                         //게임오버 패널 전체 보이기
+        anim.SetTrigger("GameOverStart");
     }
 }

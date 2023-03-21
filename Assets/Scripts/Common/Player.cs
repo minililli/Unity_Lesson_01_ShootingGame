@@ -36,13 +36,13 @@ public class Player : MonoBehaviour
                 life = value;
                 Debug.Log($"{life}");
                 onLifeChange?.Invoke(life); //델리게이트에 연결된 함수들 실행
+            
             }
-
-            if(life<=0)
-            {
-                life = 0;
+                if(life<=0)
+                {
                 OnDie();                    //죽었을 때의 동작이 있는 함수 실행
-            }
+                }
+
         }
     }
 
@@ -284,7 +284,7 @@ public class Player : MonoBehaviour
         gameObject.layer = LayerMask.NameToLayer("Player");
         rigid.freezeRotation = false;
 
-        onDie?.Invoke(this);
+        onDie?.Invoke(this); //죽었다고 알리기
     }
 
 }

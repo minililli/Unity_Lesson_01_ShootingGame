@@ -17,6 +17,11 @@ public class RankLine : MonoBehaviour
         recordText = child.GetComponent<TextMeshProUGUI>();
     }
 
+    /// <summary>
+    /// 데이터 세팅함수
+    /// </summary>
+    /// <param name="rankerName"> 랭커의 이름 </param>
+    /// <param name="record"> 랭커의 점수 기록</param>
     public void SetData(string rankerName, int record)
     {
         nameText.text = rankerName;
