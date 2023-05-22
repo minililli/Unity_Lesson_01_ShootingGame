@@ -20,36 +20,34 @@ public class ObjectPool<T> : MonoBehaviour where T : PoolObject // PoolObject를
         pool = new T[poolSize];
         readyQueue = new Queue<T>(poolSize);
 
-        //readyQueue.Count();     // 실제로 사용하는 갯수
-        //readyQueue.Capacity;     //미리 만들어 놓은 노드의 갯수
-
         GenerateObjects(0, poolSize, pool); // 첫번째 풀 생성
     }
 
     //오브젝트를 생성하고 배열에 추가하는 함수
     void GenerateObjects(int start, int end, T[] newArray)
     {
-        for (int i =start; i<end; i++) //start부터 end까지 반복
+        for (int i = start; i < end; i++) //start부터 end까지 반복
         {
             GameObject obj = Instantiate(originalPrefab, transform); //프리팹 생성
             obj.gameObject.name = $"{originalPrefab.name}+{i}";     //이름 변경
             T comp = obj.GetComponent<T>();                         //컴포넌트 찾고 (poolObject타입)
-            //리턴타입이 void이고 파라메터가 없는 람다함수를 onDisable()에 등록
-            //델리케이트 실행시 readyQueue.Enqueue(comp)실행
-            comp.onDisable += (() => readyQueue.Enqueue(comp));     //비활성화될 때 + 람다 (parameter) => 리턴타입void, comp채우기 //레디큐에 넣기 
+          
+            comp.onDisable += () => readyQueue.Enqueue(comp);     //비활성화될 때 + 람다 (parameter) => 리턴타입void, comp채우기 //레디큐에 넣기 
+            
             newArray[i] = comp;                                     //풀배열에 넣고   
             obj.SetActive(false);                                  //비활성화
-        } 
+        }
     }
-    
+
     public T GetObject()
     {
-        if(readyQueue.Count > 0) // 큐에 오브젝트가 있는지 확인-큐에 오브젝트가 있으면, 
+        if (readyQueue.Count > 0) // 큐에 오브젝트가 있는지 확인-큐에 오브젝트가 있으면, 
         {
             T obj = readyQueue.Dequeue();   //큐에서 하나 꺼내고
             obj.gameObject.SetActive(true); // 활성화 시킨 다음에
             return obj;                     // 리턴
         }
+
         else                                //큐에 오브젝트 없으면
         {
             Expandpool();                   //풀에 두배로 늘린다.
@@ -63,21 +61,23 @@ public class ObjectPool<T> : MonoBehaviour where T : PoolObject // PoolObject를
         if (readyQueue.Count > 0) // 큐에 오브젝트가 있는지 확인-큐에 오브젝트가 있으면, 
         {
             T obj = readyQueue.Dequeue();   //큐에서 하나 꺼내고
-            obj.transform.position = spawnTransform.position;
-            obj.transform.rotation = spawnTransform.rotation;
-            obj.transform.localScale = spawnTransform.localScale;
+            obj.transform.position = spawnTransform.position;   //spawnTransform에 위치시키고,
+            obj.transform.rotation = spawnTransform.rotation;   //spawnTransform 회전값을 동일하게하고,
+            obj.transform.localScale = spawnTransform.localScale;//spawnTransform 스케일을 동일하게 하고
             obj.gameObject.SetActive(true); // 활성화 시킨 다음에
             return obj;                     // 리턴
         }
-        else                                //큐에 오브젝트 없으면
+        else                                            //큐에 오브젝트 없으면
         {
-            Expandpool();                  //풀에 두배로 늘린다.
-            return GetObject();            // 새롭게 하나 요청
+            Expandpool();                             //풀에 두배로 늘린다.
+            return GetObject(spawnTransform);            // 새롭게 하나 요청
         }
     }
 
     private void Expandpool()
     {
+        Debug.LogError("Pool을 증가시킵니다.");
+        
         int newSize = poolSize * 2;     // 새로운 풀 크기 설정
         T[] newPool = new T[newSize];   // 새로운 풀 생성
         for (int i = 0; i < poolSize; i++)// 이전 풀에 있던 내용을 새 풀에 복사

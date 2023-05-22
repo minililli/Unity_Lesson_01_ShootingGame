@@ -112,8 +112,8 @@ MonoBehaviour:
   minrotateSpeed: 30
   childType: 5
   splitCount: 3
-  minLifeTime: 5
-  maxLifeTime: 7
+  minLifeTime: 3
+  maxLifeTime: 5
   criticalChance: 0.403
   criticalSplitCount: 20
 --- !u!58 &5213604903312565119
@@ -164,7 +164,7 @@ Skybox:
   m_CustomSkybox: {fileID: 0}
 --- !u!95 &5331717269310810412
 Animator:
-  serializedVersion: 4
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -181,4 +181,5 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
