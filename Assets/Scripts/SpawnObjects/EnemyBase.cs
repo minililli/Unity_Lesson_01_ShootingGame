@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class EnemyBase : PoolObject
@@ -56,7 +57,15 @@ public class EnemyBase : PoolObject
             }
         }
     }
+    protected virtual void Awake()
+    {
+        TargetPlayer = FindObjectOfType<Player>();
+    }
+    void Start()
+    {
+        player.onDie += (player) => player = null;
 
+    }
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Bullet"))

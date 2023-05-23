@@ -3,13 +3,14 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Processors;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
 public class Player : MonoBehaviour
 {
-
+    StageClear stageClear;  //게임 스테이지 클리어 판단
+    bool onClear = false;
     private Animator anim;
-    //2. InputSystem을 통한 움직임 구현
     private PlayerInputActions inputActions; //InputActions 인스턴스 생성
     private Vector2 inputDir = Vector2.zero; //움직임 스무스하게 하기위한 작업 2.초기화
     private Rigidbody2D rigid;
@@ -66,9 +67,9 @@ public class Player : MonoBehaviour
             {
                 AddScore(extraScore);
             }
-                power = Mathf.Clamp(power, 1, 3);
+            power = Mathf.Clamp(power, 1, 3);
 
-                RefreshFirePos(power);
+            RefreshFirePos(power);
         }
     }
 
@@ -122,6 +123,9 @@ public class Player : MonoBehaviour
     private void Awake()
     {
         inputActions = new PlayerInputActions(); //플레이어 이동처리 
+        stageClear = FindObjectOfType<StageClear>();    //스테이지클리어여부확인
+        stageClear.onStageClear += () => onClear = true;
+
 
         rigid = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
@@ -132,7 +136,7 @@ public class Player : MonoBehaviour
         for (int i = 0; i < fireRoot.childCount; i++)
         {
             fireTransform[i] = fireRoot.GetChild(i);
-            
+
         }
 
         fireFlash = transform.GetChild(1).gameObject;
@@ -145,25 +149,23 @@ public class Player : MonoBehaviour
     {
         Power = 1;
         Life = initialLife;
+        stageClear.onStageClear += () => { InputDisable(); gameObject.SetActive(false); };
     }
     //이 게임 오브젝트가 완성된 이후 활성화 할 때 실행되는 함수
     private void OnEnable()
     {
-        inputActions.Player.Enable(); // 사용할 액션맵 Player 등록
-        //inputActions.Player.Fire.started;    // 버튼을 누른 직후 
-        //inputActions.Player.Fire.performed;  // 버튼을 충분히 눌렀을 때 <조이스틱민감.키보드는 Started와 크게 다르지 않음.>
-        //inputActions.Player.Fire.canceled;   // 버튼을 뗀 직후
-
-        inputActions.Player.Fire.performed += OnFireStart;
-        inputActions.Player.Fire.canceled += OnFireStop;
-        inputActions.Player.Move.performed += OnMoveInput;
-        inputActions.Player.Move.canceled += OnMoveInput;
+            inputActions.Player.Enable(); // 사용할 액션맵 Player 등록
+            inputActions.Player.Fire.performed += OnFireStart;
+            inputActions.Player.Fire.canceled += OnFireStop;
+            inputActions.Player.Move.performed += OnMoveInput;
+            inputActions.Player.Move.canceled += OnMoveInput;
     }
 
     //이 게임 오브젝트가 비활성화될 때 실행되는 함수
     private void OnDisable() // Enable과 순서가 반대!
     {
-        InputDisable();
+
+            InputDisable();
     }
 
     void InputDisable()
@@ -274,9 +276,9 @@ public class Player : MonoBehaviour
         gameObject.layer = LayerMask.NameToLayer("Invincible");     // 레이어 변경("invincible")
         isInvincibleMode = true;                                     // 무적모드 실행했다고 표시
         timeElapsed = 0.0f;                                         // 시간 카운터 초기화
-       
+
         yield return new WaitForSeconds(invincibleTime);            // invincibleTime동안 대기
-        
+
         spriteRenderer.color = Color.white;                         // 색깔변한 상태끝날 때를 대비해서 초기화
         isInvincibleMode = false;                                   //무적 모드 끝났다고 표시
         gameObject.layer = LayerMask.NameToLayer("Player");         // 레이어 되돌리기

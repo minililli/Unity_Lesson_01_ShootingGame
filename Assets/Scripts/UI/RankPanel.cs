@@ -8,55 +8,64 @@ using UnityEngine.UI;
 public class RankPanel : MonoBehaviour
 {
     RankLine[] rankLines = null;
-    int[] highScores = null;
+    int[] highScores = null;    //랭킹별 최고점으로, 인덱스 작을수록 높은점수, 인덱스 클수록 낮은점수
     string[] rankerNames = null;
+
     int rankCount;
+
     /// <summary>
     /// 랭킹이 업데이트 되지 않았음을 표시하는 상수
     /// </summary>
     const int NotUpdated = -1;
+
     // updateIndex : 현재 업데이트가 된 랭킹의 인덱스
     int updatedIndex = NotUpdated;
     bool isUpdated;
 
     TMP_InputField inputField;
-    
+
     private void Awake()
     {
         inputField = GetComponentInChildren<TMP_InputField>();
         inputField.onEndEdit.AddListener(OnNameInputEnd);
 
         rankLines = GetComponentsInChildren<RankLine>();
-        int rankCount = rankLines.Length;
-        highScores = new int[rankCount];
+
+        rankCount = rankLines.Length;
+        highScores = new int[rankCount];        //배열 공간 확보
         rankerNames = new string[rankCount];
+
     }
     private void Start()
     {
         inputField.gameObject.SetActive(false);
         Player player = FindObjectOfType<Player>();
         player.onDie += RankUpdate;
-        LoadRankingData();
+        LoadRankingData();//데이터 읽기, 파일 없으면 디폴트값 주기
+        SaveRankingData();
     }
 
-    void OnNameInputEnd(string text)
+    /// <summary>
+    /// 이름 입력이 완료되었을 때 실행되는 함수
+    /// </summary>
+    /// <param name="text">입력받은 이름</param>
+    private void OnNameInputEnd(string text)
     {
-        rankerNames[updatedIndex] = text;
-        inputField.gameObject.SetActive(false);
-        SaveRankingData();
-        RefreshRankLines();
-
+        rankerNames[updatedIndex] = text;       // 입력받은 텍스트를 해당 랭커의 이름으로 지정
+        inputField.gameObject.SetActive(false); // 입력 완료되었으니 다시 안보이게 만들기
+        SaveRankingData();  // 새로 저장하고 
+        RefreshRankLines(); // UI 갱신
     }
 
     void RankUpdate(Player player)
     {
         int newScore = player.Score;                            //새점수
-            
-        for(int i=0; i < rankCount; i++)                        //랭크카운트갯수만큼 반복문실행
+
+        for (int i = 0; i < rankCount; i++)                        //랭킹 1등부터 5등까지 확인
         {
             if (highScores[i] < newScore)
             {
-                for(int j = rankCount-1; j>i; j--)
+                for (int j = rankCount - 1; j > i; j--)
                 {
                     highScores[j] = highScores[j - i];
                     rankerNames[j] = rankerNames[j - i];
@@ -76,11 +85,9 @@ public class RankPanel : MonoBehaviour
     }
     void SaveRankingData()
     {
-        //PlayerPrefs.SetInt("Score", 10);              // 컴퓨터에 Score라는 이름으로 10을 저장
 
-        //SaveData saveData = new SaveData();
-        SaveData saveData = new();  // 윗줄과 같은 코드(타입을 알 수 있기 때문에 생략한 것)
-        saveData.rankerNames = rankerNames;  // 생성한 인스턴스에 데이터 기록
+        SaveData saveData = new SaveData();
+        saveData.rankerNames = rankerNames;
         saveData.highScores = highScores;
 
         string json = JsonUtility.ToJson(saveData);     // saveData에 있는 내용을 json 양식으로 설정된 string으로 변경
@@ -106,15 +113,16 @@ public class RankPanel : MonoBehaviour
         if (result) //폴더와 파일이 있으면,
         {
             string json = File.ReadAllText(fullPath);    //파일읽기
-            SaveData loadData = JsonUtility.FromJson<SaveData>(json); //Save데이터 형식으롱 넣어주기
+            SaveData loadData = JsonUtility.FromJson<SaveData>(json); //Save데이터 형식으로 넣어주기
             highScores = loadData.highScores;           //실제로 최고 점 수 넣기
             rankerNames = loadData.rankerNames;         //이름넣기
+
         }
         else
         {
             //파일에서 못읽었으면 디폴트 값 주기
             int size = rankLines.Length;
-            for(int i = 0; i < size; i++)
+            for (int i = 0; i < size; i++)
             {
                 int resultScore = 1;
                 for (int j = size - i; j > 0; j--)
@@ -125,16 +133,16 @@ public class RankPanel : MonoBehaviour
 
                 char temp = 'A';
                 temp = (char)((byte)temp + i);
-                rankerNames[i] = $"{temp}{temp}{temp}";
+                rankerNames[i] = $"{temp}{temp}{temp}"; // "AAA", "BBB", "CCC" ...
             }
            
         }
-        RefreshRankLines();             
+        RefreshRankLines();         //로딩되고 RankLines갱신하기
         return result;
     }
     void RefreshRankLines()
     {
-        for(int i=0; i<rankLines.Length; i++)
+        for (int i = 0; i < rankLines.Length; i++)
         {
             rankLines[i].SetData(rankerNames[i], highScores[i]);
         }

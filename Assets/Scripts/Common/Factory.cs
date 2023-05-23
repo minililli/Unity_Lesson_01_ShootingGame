@@ -13,7 +13,8 @@ public enum PoolObjectType
     Asteroid,
     Asteroidsmall,
     Explosion,
-    PowerUp
+    PowerUp,
+    EnemyBullet,
     
 }
 
@@ -27,6 +28,7 @@ public class Factory : Singleton<Factory>
     AsteroidPool asteroidPool;
     AsteroidsmallPool asteroidsmallPool;
     PowerUpPool powerUpPool;
+    EnemyBulletPool enemybulletPool;
 
     protected override void PreInitialize()
     {
@@ -38,6 +40,7 @@ public class Factory : Singleton<Factory>
         asteroidPool = GetComponentInChildren<AsteroidPool>();
         asteroidsmallPool = GetComponentInChildren<AsteroidsmallPool>();
         powerUpPool = GetComponentInChildren<PowerUpPool>();
+        enemybulletPool = GetComponentInChildren<EnemyBulletPool>();
 
     }
 
@@ -51,6 +54,7 @@ public class Factory : Singleton<Factory>
         asteroidPool?.Initialize();
         asteroidsmallPool?.Initialize();
         powerUpPool?.Initialize();
+        enemybulletPool?.Initialize();
     }
 
 
@@ -85,6 +89,9 @@ public class Factory : Singleton<Factory>
             case PoolObjectType.PowerUp:
                 result = GetPowerUp().gameObject;
                 break;
+            case PoolObjectType.EnemyBullet:
+                result = GetEnemyBullet().gameObject;
+                break;
         }
         return result;
     }
@@ -96,10 +103,11 @@ public class Factory : Singleton<Factory>
     public SpecialFighter GetSpecialFighter() => specialfighterPool?.GetObject();
     public Effect GetExplosionEffect() => explosionPool?.GetObject();
     
-    //운석하나 꺼내는 함수
     public Asteroid GetAsteroid() => asteroidPool?.GetObject();
 
     public AsteroidBase GetAsteroidSmall() => asteroidsmallPool?.GetObject();
 
     public PowerUp GetPowerUp() => powerUpPool?.GetObject();
+
+    public EnemyBullet GetEnemyBullet() => enemybulletPool?.GetObject();
 }

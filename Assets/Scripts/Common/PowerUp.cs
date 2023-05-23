@@ -48,18 +48,14 @@ public class PowerUp : PoolObject
 
     private void Awake()
     {
-        //player = FindObjectOfType<Player>();
+        playerTransform = FindObjectOfType<Player>().transform;
         Animation anim = GetComponent<Animation>();
         changeInterval = new WaitForSeconds(dirChangeinterval);
     }
 
     private void OnEnable()
     {
-        if (playerTransform == null) // 없을때만 찾기
-        {
-            GameObject player = GameObject.FindGameObjectWithTag("Player");
-            playerTransform = player.transform;
-        }
+        
         SetRandomDirection(true); // 시작할 때 랜덤방향 설정하기
         dirChangeCount = dirChangeCountMax; //튕기는 횟수 초기화
 
@@ -76,7 +72,7 @@ public class PowerUp : PoolObject
     void SetRandomDirection(bool allRandom = false)
     {
         // 40%확률
-        if (!allRandom && Random.value < 0.4f)
+        if (playerTransform != null && !allRandom && Random.value < 0.4f)
         {
 
             Vector2 playerToPowerup = transform.position - playerTransform.position;

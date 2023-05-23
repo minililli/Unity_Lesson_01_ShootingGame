@@ -3,8 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
-[Serializable] //직렬화 가능하다고 표시해놓은 attribute
+//직렬화 가능하다고 표시해놓은 attribute
+[Serializable] 
 public class SaveData
 {
     public string[] rankerNames;

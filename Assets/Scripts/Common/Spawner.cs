@@ -14,6 +14,8 @@ public class Spawner : MonoBehaviour
 {
     public PoolObjectType objectType; //생성할 게임오브젝트
 
+    Boss boss;
+
     // 생성할 위치
     public float minY = -4.0f;
     public float maxY = 4.0f;
@@ -22,15 +24,21 @@ public class Spawner : MonoBehaviour
     public float interval = 1.0f;
 
     Player player;
+    private void OnEnable()
+    {
+    }
     private void Start()
     {
-        
-        player = FindObjectOfType<Player>();
-
-        //Wait = new WaitForSeconds(interval); // yield return new WaitForSeconds(interval)보다는 게임 실행 도중 interval 변하지 않는다면 미리 한번 만들어두는 것이 메모리상 유리
-        
         StartCoroutine(Spawn()); // 시작할 때 Spawn 코루틴(오브젝트를 주기적으로 생성) 시작
-    
+
+        player = FindObjectOfType<Player>();
+        player.onDie += (player) => StopAllCoroutines();
+
+        boss = FindObjectOfType<Boss>();
+        if (boss != null)
+        {
+            boss.onBossDie += () => StopAllCoroutines();
+        }
     }
 
     private IEnumerator Spawn()
@@ -66,7 +74,7 @@ public class Spawner : MonoBehaviour
 
         //스폰영역 큐브로 그리기
         Gizmos.DrawWireCube(transform.position,
-                            new Vector3(1, (Mathf.Abs(maxY)+Mathf.Abs(minY)), 1));
+                            new Vector3(1, (Mathf.Abs(maxY) + Mathf.Abs(minY)), 1));
     }
 
     virtual protected void OnDrawGizmosSelected()
