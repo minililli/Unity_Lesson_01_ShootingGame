@@ -12,7 +12,7 @@ public class Boss : EnemyBase
     public int bossLife = 20;
     public float midInterval = 1.0f;
     public float sideInterval = 5f;
-    bool onStart = false;
+
     bool onCrush = false;
     Transform[] sidefirePos;
     TimeManager timer;
@@ -109,7 +109,6 @@ public class Boss : EnemyBase
             yield return null;
         }
 
-        onStart = true;
         for (int i = 0; i < colliders.Length; i++)
         {
             colliders[i].enabled = true;

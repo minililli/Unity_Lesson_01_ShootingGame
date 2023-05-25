@@ -15,6 +15,13 @@ public class Test_GameOver : Test_Base
     }
     protected override void Test1(InputAction.CallbackContext _)
     {
-
+        SaveData saveData= new SaveData();
+        //saveData.highScores = 
     }
+
+    protected override void Test2(InputAction.CallbackContext _)
+    {
+        
+    }
+
 }
