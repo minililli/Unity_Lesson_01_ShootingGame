@@ -6,19 +6,18 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
-public class StageClear : MonoBehaviour
+public class StageClear : Singleton<StageClear>
 {
     PlayerInputActions inputActions;
     Galaxy galaxy;
-
-    RectTransform rect;
+    Player player;
+    ScoreBoard scoreBoard;
     CanvasGroup panelGroup;
     TextMeshProUGUI restartText;
     TextMeshProUGUI exitText;
 
-    bool stageClear = false;
+    int playerScoreStack;
     public Action onStageClear; //스테이지 종료됨을 알리는 델리게이트
-
 
     WaitForSeconds reStartInterval;
     public float reStartIntervaltime = 0.3f;
@@ -27,22 +26,17 @@ public class StageClear : MonoBehaviour
 
 
 
-    private void Awake()
+    protected override void PreInitialize()
     {
-        inputActions = new PlayerInputActions();
+        base.PreInitialize();
 
-        galaxy = FindObjectOfType<Galaxy>();
-        rect = GetComponent<RectTransform>();
-        panelGroup = GetComponent<CanvasGroup>();
+    }
+    protected override void Initialize()
+    {
 
-
-        restartText = transform.GetChild(3).GetComponent<TextMeshProUGUI>();
-        exitText = transform.GetChild(4).GetComponent<TextMeshProUGUI>();
-
-        panelGroup.alpha = 0.0f;
+        base.Initialize();
     }
 
-   
     private void OnDisable()
     {
         inputActions.UI.Start.performed -= NextScene;
@@ -50,22 +44,25 @@ public class StageClear : MonoBehaviour
         inputActions.UI.Disable();
     }
 
-    private void ExitScene(InputAction.CallbackContext _)
+    private void OnEnable()
     {
-        Application.Quit();
-    }
-
-    private void NextScene(InputAction.CallbackContext _)
-    {
-        SceneManager.LoadScene(0);
-    }
-
-    private void Start()
-    {
-        stageClear = false;
+        inputActions = new PlayerInputActions();
+        player = FindObjectOfType<Player>();
+        galaxy = FindObjectOfType<Galaxy>();
         galaxy.StageClearAlarm += OnStageClear;
 
+    }
+    private void Start()
+    {
 
+        restartText = transform.GetChild(3).GetComponent<TextMeshProUGUI>();
+        exitText = transform.GetChild(4).GetComponent<TextMeshProUGUI>();
+
+        panelGroup = GetComponent<CanvasGroup>();
+        panelGroup.alpha = 0.0f;
+
+        scoreBoard = FindObjectOfType<ScoreBoard>();
+        scoreBoard.StageClearScore += (score) => playerScoreStack = score;
 
         reStartInterval = new WaitForSeconds(reStartIntervaltime);
         exitInterval = new WaitForSeconds(exitIntervaltime);
@@ -73,13 +70,10 @@ public class StageClear : MonoBehaviour
         StartCoroutine(FlashText(restartText, reStartInterval));
         StartCoroutine(FlashText(exitText, exitInterval));
 
-
     }
-
     public void OnStageClear()
     {
         panelGroup.alpha = 1.0f;
-        stageClear = true;
         UIEnable();
         onStageClear?.Invoke();
     }
@@ -100,4 +94,15 @@ public class StageClear : MonoBehaviour
             yield return interval;
         }
     }
+
+    public void ExitScene(InputAction.CallbackContext _)
+    {
+        Application.Quit();
+    }
+
+    public void NextScene(InputAction.CallbackContext _)
+    {
+        SceneManager.LoadScene(1);
+    }
+
 }

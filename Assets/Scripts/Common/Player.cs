@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Processors;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
@@ -34,7 +33,7 @@ public class Player : MonoBehaviour
                 }
 
                 life = value;
-                Debug.Log($"{life}");
+                //Debug.Log($"{life}");
                 onLifeChange?.Invoke(life); //델리게이트에 연결된 함수들 실행
 
             }
@@ -105,6 +104,7 @@ public class Player : MonoBehaviour
             //Debug.Log($"점수 : {score}");
         }
     }
+
     /// <summary>
     /// Power 아이템의 추가점수
     /// </summary>
@@ -115,8 +115,11 @@ public class Player : MonoBehaviour
 
     public void AddScore(int plus)
     {
-        Score += plus; //대문자 Score여야함!
-        //Debug.Log($"점수 : {score}");
+        if (!isDead)
+        {
+            Score += plus;
+
+        }
     }
 
     //--------------------------------------------------------------------------------------------------------
@@ -124,7 +127,15 @@ public class Player : MonoBehaviour
     {
         inputActions = new PlayerInputActions(); //플레이어 이동처리 
         stageClear = FindObjectOfType<StageClear>();    //스테이지클리어여부확인
-        stageClear.onStageClear += () => onClear = true;
+        if (stageClear != null)
+        {
+            stageClear.onStageClear += () =>
+            {
+                InputDisable();
+                onClear = true;
+            };
+
+        }
 
 
         rigid = GetComponent<Rigidbody2D>();
@@ -149,23 +160,31 @@ public class Player : MonoBehaviour
     {
         Power = 1;
         Life = initialLife;
-        stageClear.onStageClear += () => { InputDisable(); gameObject.SetActive(false); };
+        if (stageClear != null)
+        {
+            stageClear.onStageClear += () => { InputDisable(); gameObject.SetActive(false); };
+        }
+        TimeManager timer= FindObjectOfType<TimeManager>();
+        timer.TimeOver += OnDie;
+        
+
     }
     //이 게임 오브젝트가 완성된 이후 활성화 할 때 실행되는 함수
     private void OnEnable()
     {
-            inputActions.Player.Enable(); // 사용할 액션맵 Player 등록
-            inputActions.Player.Fire.performed += OnFireStart;
-            inputActions.Player.Fire.canceled += OnFireStop;
-            inputActions.Player.Move.performed += OnMoveInput;
-            inputActions.Player.Move.canceled += OnMoveInput;
+        //player인풋액션등록
+        inputActions.Player.Enable();
+        inputActions.Player.Fire.performed += OnFireStart;
+        inputActions.Player.Fire.canceled += OnFireStop;
+        inputActions.Player.Move.performed += OnMoveInput;
+        inputActions.Player.Move.canceled += OnMoveInput;
     }
 
     //이 게임 오브젝트가 비활성화될 때 실행되는 함수
     private void OnDisable() // Enable과 순서가 반대!
     {
 
-            InputDisable();
+        InputDisable();
     }
 
     void InputDisable()
@@ -175,8 +194,10 @@ public class Player : MonoBehaviour
         inputActions.Player.Fire.canceled -= OnFireStop;
         inputActions.Player.Fire.performed -= OnFireStart;
         inputActions.Player.Disable();
+
     }
 
+ 
     IEnumerator FlashEffect()
     {
         fireFlash.SetActive(true);

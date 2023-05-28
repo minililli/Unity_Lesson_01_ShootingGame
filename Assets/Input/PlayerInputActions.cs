@@ -167,6 +167,17 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Fire"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9a3206a0-50b3-43a7-b486-fedd8e9ea21e"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""Fire"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -280,12 +291,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         },
         {
             ""name"": ""UI"",
-            ""id"": ""ae1bf1a1-f91d-405a-b206-6124c65aeb62"",
+            ""id"": ""e96e1e31-37ea-46e9-a7c1-c0bec66ca609"",
             ""actions"": [
                 {
                     ""name"": ""Start"",
                     ""type"": ""Button"",
-                    ""id"": ""7c98942e-f4e6-42b6-ae84-6a6ddd95e000"",
+                    ""id"": ""0d53c196-2688-4469-9c1c-cb2010b8a304"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -294,7 +305,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""Exit"",
                     ""type"": ""Button"",
-                    ""id"": ""897c5022-c726-4f11-9d99-a16d0608d5da"",
+                    ""id"": ""aff24165-3272-48d8-9d9c-1d726b63c1ac"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -304,8 +315,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             ""bindings"": [
                 {
                     ""name"": """",
-                    ""id"": ""28f347ab-4e53-40e7-a478-ee7648db446c"",
-                    ""path"": ""<Keyboard>/space"",
+                    ""id"": ""10a24bad-1fc2-4947-a6eb-fe52346c6351"",
+                    ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""KeyboardMouse"",
@@ -315,7 +326,18 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""f059dbb0-fb71-4b8d-989e-587f1b17faa6"",
+                    ""id"": ""66869dad-c262-4963-a8fe-c16a9629d34c"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Start"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""11084ad2-37cb-4ff5-a54d-134af985e527"",
                     ""path"": ""<Keyboard>/escape"",
                     ""interactions"": """",
                     ""processors"": """",

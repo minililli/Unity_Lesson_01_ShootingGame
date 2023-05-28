@@ -17,10 +17,20 @@ public class ObjectPool<T> : MonoBehaviour where T : PoolObject // PoolObject를
     //처음 만들어졌을 때 한번 실행될 코드(초기화 코드)
     public void Initialize()
     {
-        pool = new T[poolSize];
-        readyQueue = new Queue<T>(poolSize);
+        if (pool == null)
+        {
+            pool = new T[poolSize];
+            readyQueue = new Queue<T>(poolSize);
 
-        GenerateObjects(0, poolSize, pool); // 첫번째 풀 생성
+            GenerateObjects(0, poolSize, pool); // 첫번째 풀 생성
+        }
+        else
+        {
+            foreach (var obj in pool)
+            {
+                obj.gameObject.SetActive(false);
+            }
+        }
     }
 
     //오브젝트를 생성하고 배열에 추가하는 함수
@@ -31,9 +41,9 @@ public class ObjectPool<T> : MonoBehaviour where T : PoolObject // PoolObject를
             GameObject obj = Instantiate(originalPrefab, transform); //프리팹 생성
             obj.gameObject.name = $"{originalPrefab.name}+{i}";     //이름 변경
             T comp = obj.GetComponent<T>();                         //컴포넌트 찾고 (poolObject타입)
-          
+
             comp.onDisable += () => readyQueue.Enqueue(comp);     //비활성화될 때 + 람다 (parameter) => 리턴타입void, comp채우기 //레디큐에 넣기 
-            
+
             newArray[i] = comp;                                     //풀배열에 넣고   
             obj.SetActive(false);                                  //비활성화
         }
@@ -77,7 +87,7 @@ public class ObjectPool<T> : MonoBehaviour where T : PoolObject // PoolObject를
     private void Expandpool()
     {
         Debug.LogError("Pool을 증가시킵니다.");
-        
+
         int newSize = poolSize * 2;     // 새로운 풀 크기 설정
         T[] newPool = new T[newSize];   // 새로운 풀 생성
         for (int i = 0; i < poolSize; i++)// 이전 풀에 있던 내용을 새 풀에 복사

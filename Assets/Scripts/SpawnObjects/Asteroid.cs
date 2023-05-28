@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.TextCore.Text;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -40,7 +39,7 @@ public class Asteroid : AsteroidBase
 
     protected override void OnEnable()
     {
-        maxHitPoint = Random.Range(2,5);                            //임의추가-
+        maxHitPoint = Random.Range(2,5);                         
         base.OnEnable();
         score = 30;
         float lifeTime = Random.Range(minLifeTime, maxLifeTime);
@@ -97,7 +96,7 @@ public class Asteroid : AsteroidBase
         anim.SetTrigger("Selfcrush");               // 트리거 발동 시키고
 
         yield return oneSecond; // 1초 대기
-        Debug.Log("자폭함");
+        //Debug.Log("자폭함");
         isSelfCrushed = true;
         Crush();
     }

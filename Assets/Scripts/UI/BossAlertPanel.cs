@@ -13,11 +13,12 @@ public class BossAlertPanel : MonoBehaviour
         timer= FindObjectOfType<TimeManager>();
         canvasgroup= GetComponent<CanvasGroup>();
         canvasgroup.alpha = 0.0f;
+
     }
 
     private void Start()
     {
-        timer.Bosstime += () => StartCoroutine(Alert());
+        timer.BossTime += () => StartCoroutine(Alert());
     }
 
     IEnumerator Alert()
@@ -35,6 +36,6 @@ public class BossAlertPanel : MonoBehaviour
         canvasgroup.alpha = 1.0f;
         yield return new WaitForSeconds(0.5f);
         canvasgroup.alpha = 0f;
-        Destroy(this); 
+        StopCoroutine(Alert());
     }
 }

@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -25,7 +24,7 @@ public class MainCanvas : MonoBehaviour
     float asteroidSpeed = 90.0f;
     float varientSpeed;
     Image player;
-    float playerSpeed = 10.0f;
+    float playerSpeed = 5.0f;
     Vector3 InitPos;
 
     WaitForSeconds startInterval;

@@ -40,7 +40,7 @@ public class EnemyBase : PoolObject
     /// 플레이어에 대한 참조
     /// </summary>
     /// 
-    Player player = null;
+    protected Player player = null;
 
 
     /// <summary>
@@ -61,7 +61,7 @@ public class EnemyBase : PoolObject
     {
         TargetPlayer = FindObjectOfType<Player>();
     }
-    void Start()
+    protected virtual void Start()
     {
         player.onDie += (player) => player = null;
 

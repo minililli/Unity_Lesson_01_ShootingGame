@@ -24,7 +24,7 @@ public class RankLine : MonoBehaviour
     /// <param name="rankerName"> 랭커의 이름 </param>
     /// <param name="record"> 랭커의 점수 기록</param>
     public void SetData(string rankerName, int record)
-    {
+    {   
         nameText.text = rankerName;
         recordText.text = record.ToString("N0");
     }

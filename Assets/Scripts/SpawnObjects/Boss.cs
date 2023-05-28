@@ -5,100 +5,121 @@ using System;
 using UnityEngine;
 using System.Threading;
 
-public class Boss : EnemyBase
+public class Boss : MonoBehaviour
 {
     [Header("Boss관련 정보")]
     public GameObject BulletPrefab;
-    public int bossLife = 20;
-    public float midInterval = 1.0f;
-    public float sideInterval = 5f;
-
+    public int maxBossLife = 20;
+    int bossLife;
+    int Life
+    {
+        get => bossLife;
+        set
+        {
+            bossLife = value;
+            Mathf.Clamp(bossLife, 0, maxBossLife);
+            if (bossLife < 1)
+            {
+                OnCrush();
+            }
+        }
+    }
+    public float midInterval = 2.0f;
+    public float sideInterval = 5.0f;
+    public float moveSpeed = 2.0f;
+    bool onStart = false;
     bool onCrush = false;
     Transform[] sidefirePos;
-    TimeManager timer;
     CapsuleCollider2D[] colliders;
+    Player player;
+    TimeManager timer;
+    public Action onBossDie;
 
-    protected override void Awake()
+    protected void Awake()
     {
-        timer = FindObjectOfType<TimeManager>();
         colliders = GetComponents<CapsuleCollider2D>();
+        //콜라이더 꺼놓기
         for (int i = 0; i < colliders.Length; i++)
         {
             colliders[i].enabled = false;
         }
-        base.Awake();
+
+        timer = FindObjectOfType<TimeManager>();
+        player = FindObjectOfType<Player>();
     }
-    protected override void OnEnable()
+    protected void OnEnable()
     {
-        maxHitPoint = bossLife;
-        base.OnEnable();
-        Transform fireRoot = transform.GetChild(0);         //발사 위치 찾기
+        onCrush = false;
+        Life = maxBossLife;
+        //side발사 위치 찾기
+        Transform fireRoot = transform.GetChild(0);
         sidefirePos = new Transform[fireRoot.childCount];
         for (int i = 0; i < fireRoot.childCount; i++)
         {
             sidefirePos[i] = fireRoot.GetChild(i);
         }
 
+        StartCoroutine(MidFire()); //중간 위치 발사
+        StartCoroutine(SideFire()); //Side 발사
     }
-    void Start()
+    protected void OnDisable()
     {
-        timer.Bosstime += () => StartCoroutine(Appear());
-
-        onCrush = false;
+        StopAllCoroutines();
+        onStart = false;
     }
 
+    protected void Start()
+    {
+        onStart = false;
+        onCrush = false;
+        timer.BossTime += () =>
+        {
+            StartCoroutine(Appear());
+        };
 
+
+    }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Bullet"))
+        {
+
+            Life--;
+        }
+    }
 
     private void Update()
     {
-        if (TargetPlayer.transform.position.y < transform.position.y)
+
+        if (player.transform.position.y < transform.position.y)
         {
 
             transform.Translate(Time.deltaTime * -moveSpeed, 0, 0);
-            if (Mathf.Abs(TargetPlayer.transform.position.y - transform.position.y) < 0.1f)
+            if (Mathf.Abs(player.transform.position.y - transform.position.y) < 0.1f)
             {
-                transform.position = new Vector3(transform.position.x, TargetPlayer.transform.position.y, 0);
+                transform.position = new Vector3(transform.position.x, player.transform.position.y, 0);
             }
 
         }
-        else if (TargetPlayer.transform.position.y > transform.position.y)
+        else if (player.transform.position.y > transform.position.y)
         {
             transform.Translate(Time.deltaTime * moveSpeed, 0, 0);
-            if (Mathf.Abs(TargetPlayer.transform.position.y - transform.position.y) < 0.1f)
+            if (Mathf.Abs(player.transform.position.y - transform.position.y) < 0.1f)
             {
-                transform.position = new Vector3(transform.position.x, TargetPlayer.transform.position.y, 0);
+                transform.position = new Vector3(transform.position.x, player.transform.position.y, 0);
             }
         }
 
+        if (player == null)
+        {
+            transform.position = Vector3.zero;
+        }
     }
-
-    public Action onBossDie;
-    protected override void OnCrush()
+    protected void OnCrush()
     {
         onCrush = true;
+        this.gameObject.SetActive(false);
         onBossDie?.Invoke();
-        base.OnCrush();
-    }
-    IEnumerator Fire(Transform[] transforms, float Interval = 0.5f)
-    {
-        while (!onCrush)
-        {
-            yield return new WaitForSeconds(Interval);
-            for (int i = 0; i < transforms.Length; i++)
-            {
-                GameObject obj = Factory.Inst.GetObject(PoolObjectType.EnemyBullet);
-                obj.transform.position = transforms[i].position;              //Bullet 위치 = 가져온 발사위치;
-            }
-        }
-    }
-    IEnumerator Fire(float Interval = 0.5f)
-    {
-        while (!onCrush)
-        {
-            yield return new WaitForSeconds(Interval);
-            GameObject obj = Factory.Inst.GetObject(PoolObjectType.EnemyBullet);
-            obj.transform.position = transform.GetChild(1).position;
-        }
     }
 
     IEnumerator Appear()
@@ -106,18 +127,49 @@ public class Boss : EnemyBase
         while (transform.position.x > 7.0f)
         {
             transform.position += Time.deltaTime * moveSpeed * transform.up;
-            yield return null;
+            yield return new WaitForSeconds(1f);
         }
-
+        onStart = true;
+        OnAppear();
+        StopCoroutine(Appear());
+    }
+    void OnAppear()
+    {
+        //collider 켜기
         for (int i = 0; i < colliders.Length; i++)
         {
             colliders[i].enabled = true;
         }
-        //StopCoroutine(Appear());
+    }
 
-        StartCoroutine(Fire(midInterval)); //중간 위치 발사
-        StartCoroutine(Fire(sidefirePos, sideInterval)); //Side 발사
-        onCrush = false;
+    IEnumerator SideFire()
+    {
+        while (!onCrush)
+        {
+            yield return new WaitForSeconds(sideInterval);
+            //Bullet 위치 = 가져온 발사위치;
+            if (onStart)
+            {
+                for (int i = 0; i < sidefirePos.Length; i++)
+                {
+                    GameObject obj = Factory.Inst.GetObject(PoolObjectType.EnemyBullet);
+                    obj.transform.position = sidefirePos[i].position;
+                }
+            }
+        }
+    }
+    IEnumerator MidFire()
+    {
+        while (!onCrush)
+        {
+            yield return new WaitForSeconds(midInterval);
+            if (onStart)
+            {
+                GameObject obj = Factory.Inst.GetObject(PoolObjectType.EnemyBullet);
+                obj.transform.position = transform.GetChild(1).position;
+            }
+        }
 
     }
+
 }
